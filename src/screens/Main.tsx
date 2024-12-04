@@ -1,4 +1,3 @@
-import Title from "../components/Title.tsx";
 import {ReactNode, useState} from "react";
 import Pagination from "../components/Pagination.tsx";
 
@@ -24,7 +23,6 @@ function Main() {
 
     return (
         <div className={`flex flex-col justify-center items-center w-screen h-screen `}>
-            <Title style={'w-[80%] border-b-2 p-2 mt-10'}>Vertilux's Shade Optimizer</Title>
             <div className="w-[100%] h-[100%] flex flex-col justify-center items-center mt-5 md:mt-16">
                 {/* Card */}
                 <div className="w-[90%] sm:w-[60%] h-[90%] sm:h-[80%]  flex flex-col border-2 border-white rounded-lg shadow-lg p-5 mb-auto">
