@@ -8,9 +8,9 @@ export interface PopUpProps {
     onClose: (state: boolean) => void;
 }
 
-export function PopUp({ children, style, onClose, title }: PopUpProps) {
+function PopUp({ children, style, onClose, title }: PopUpProps) {
     return (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 flex justify-center items-center">
+        <div className="fixed z-50 top-0 left-0 w-full h-full bg-black bg-opacity-60 flex justify-center items-center">
             <div className={`border border-white rounded-lg ${style}  flex flex-col`} style={{ width: 'max-content', height: 'max-content' }}>
                 <div className="w-full flex flex-row items-center bg-neutral-700 bg-opacity-35 rounded-t-lg border-b border-white">
                     <div className="flex-grow text-center ms-10">
@@ -32,3 +32,5 @@ export function PopUp({ children, style, onClose, title }: PopUpProps) {
         </div>
     );
 }
+
+export default PopUp;

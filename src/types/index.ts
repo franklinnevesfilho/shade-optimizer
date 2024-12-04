@@ -1,6 +1,11 @@
 import {User} from "./User.ts";
-
+import {ShadeOptions, ShadePlacement} from "./ShadeOptions.ts";
 
 export type {
-    User
+    User,
+    ShadeOptions
+}
+
+export {
+    ShadePlacement
 }
