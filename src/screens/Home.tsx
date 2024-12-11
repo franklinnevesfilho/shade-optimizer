@@ -1,43 +1,36 @@
-import { Card } from "../components";
+import ShadeBuilder from "../components/ShadeBuilder/ShadeBuilder.tsx";
 import {useState} from "react";
-import BuildAShade from "../components/BuildAShade.tsx";
+import Tabs from "../components/basic/Tabs.tsx";
 
-enum ShadePlacement {
-    Inside = 'Inside',
-    Outside = 'Outside'
-}
-
-type ShadeOptions = {
-    shadePlacement: ShadePlacement;
-    fabric: string;
-    width: number;
-    drop: number;
-    system: string;
-    bottomRail: string;
-}
 
 function Home() {
-    const [shadeOptions, setShadeOptions] = useState<ShadeOptions>({
-        shadePlacement: ShadePlacement.Inside,
-        fabric: '',
-        width: 0,
-        drop: 0,
-        system: '',
-        bottomRail: ''
-    })
+
+    const [selectedTab, setSelectedTab] = useState(0);
+
+    const tabs = [
+        {
+            name: "Build a Shade",
+            component: <ShadeBuilder />
+        },
+        {
+            name: "Tube Limits",
+            component: <div>Tube Limits</div>
+        }]
 
     return (
-        <Card
-            style={`text-lg`}
-        >
-            <div className="text-2xl text-center mb-5">Please Answer the following questions:</div>
-            <div className="flex flex-col items-center w-full h-full gap-5">
-                <BuildAShade
-                    shadeOptions={shadeOptions}
-                    setShadeOptions={setShadeOptions}
+        <div className={`
+        w-full h-full flex flex-col items-center justify-center
+        `}>
+            <div className={`
+            w-[90%] sm:w-[60%] h-[90%] sm:h-[80%] flex flex-col p-5 mb-auto relative
+            `}>
+                <Tabs
+                    tabs={tabs}
+                    selectedTab={selectedTab}
+                    setSelectedTab={setSelectedTab}
                 />
             </div>
-        </Card>
+        </div>
     );
 }
 

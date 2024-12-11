@@ -1,11 +1,24 @@
 import {User} from "./User.ts";
-import {ShadeOptions, ShadePlacement} from "./ShadeOptions.ts";
+import {ShadeOptions} from "./ShadeOptions.ts";
+import {Measurement} from "./Measurement.ts";
+import {Theme} from "./Theme.ts";
+import {
+    TubeCollection,
+    FabricCollection,
+    BottomRailCollection,
+    SystemCollection,
+    CollectionItem
+} from "./Components.ts";
+
 
 export type {
     User,
-    ShadeOptions
-}
-
-export {
-    ShadePlacement
+    ShadeOptions,
+    Theme,
+    Measurement,
+    TubeCollection,
+    FabricCollection,
+    BottomRailCollection,
+    SystemCollection,
+    CollectionItem,
 }

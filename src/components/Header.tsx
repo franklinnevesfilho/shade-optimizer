@@ -1,9 +1,8 @@
-import {useAuth} from "../hooks/useAuth.ts";
+import {useAuth} from "../hooks";
 import { useState } from "react";
 import {
     DefaultButton,
     Title,
-    HamburgerBtn,
     LoginCard,
     AdminNav
 } from "../components";
@@ -11,7 +10,6 @@ import {
 function Header() {
     const { authUser } = useAuth();
     const [toggle, setToggle] = useState(false);
-    const [showMenu, setShowMenu] = useState(false);
 
     return (
         <>
@@ -19,31 +17,21 @@ function Header() {
             flex justify-center items-center w-[95%] h-20 text-white mb-auto
             mt-5 ${authUser && 'flex-col md:flex-row'}
             `}>
+
                 <div className="w-full flex flex-row justify-between ">
                     {
-                        authUser ? (
-                            <>
-                                <div className={'md:fixed left-5'}>
-                                    <HamburgerBtn state={showMenu} onToggle={() => setShowMenu(!showMenu)}/>
-                                </div>
-                                <AdminNav
-                                    menuState={showMenu}
-                                    setMenuState={setShowMenu}
-                                />
-                            </>
-                        ) : (
-                            <div className={`md:fixed right-5 `}>
-                                {!authUser &&
-                                <DefaultButton
-                                    onClick={() => setToggle(true)}
-                                >
-                                    Login
-                                </DefaultButton>
-                                }
-                            </div>
-                        )
+                        authUser &&
+                        <AdminNav/>
                     }
-                    <Title style={`flex-grow`}>Vertilux's Shade Optimizer</Title>
+
+                    <Title style={`mx-auto`}>Vertilux's Shade Optimizer</Title>
+                    {!authUser &&
+                        <DefaultButton
+                            onClick={() => setToggle(true)}
+                        >
+                            Login
+                        </DefaultButton>
+                    }
                 </div>
             </div>
             {

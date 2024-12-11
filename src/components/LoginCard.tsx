@@ -1,6 +1,8 @@
-import {useAuth} from "../hooks/useAuth.ts";
+import {useAuth} from "../hooks";
 import React,{ useState } from "react";
 import PopUp from "./basic/PopUp.tsx";
+import ThemedInput from "./form/ThemedInput.tsx";
+import {DefaultButton} from "./index.ts";
 
 interface LoginCardProps{
    onClose: (state: boolean) => void;
@@ -30,29 +32,25 @@ function LoginCard({ onClose }: LoginCardProps) {
                     <div className={`
                     flex flex-col gap-5 justify-center items-center
                     `}>
-                        <input
-                            className={'pointer-events-auto w-[88%] h-[3rem] border border-white bg-transparent text-white p-2 rounded'}
+                        <ThemedInput
+                            value={email}
+                            onChange={(e) => handleInputChange(e, setEmail)}
                             type={'text'}
                             placeholder={"Email"}
-                            onChange={(e) => handleInputChange(e, setEmail)}
-                            value={email}
                         />
-                        <input
-                            className={'pointer-events-auto w-[88%] h-[3rem] border border-white bg-transparent text-white p-2 rounded'}
-                            type={'text'}
-                            placeholder={"Password"}
-                            onChange={(e) => handleInputChange(e, setPassword)}
+                        <ThemedInput
                             value={password}
+                            onChange={(e) => handleInputChange(e, setPassword)}
+                            type={'password'}
+                            placeholder={"Password"}
                         />
-                        <button className={`
-                        btn btn-square w-[88%] border border-white bg-transparent text-white
-                        hover:bg-white hover:text-neutral-700 hover:font-bold text-xl font-bold
-                        `}
-                                onClick={()=>{
-                                    signIn(email, password, () => onClose(false))
-                                }}>
+                        <DefaultButton
+                            onClick={()=>{
+                                signIn(email, password, () => onClose(false))
+                            }}
+                        >
                             Login
-                        </button>
+                        </DefaultButton>
                     </div>
                 )
             }

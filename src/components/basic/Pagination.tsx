@@ -1,3 +1,5 @@
+import {useTheme} from "../../hooks";
+import {ReactNode} from "react";
 
 interface PaginationProps {
     numberOfPages: number;
@@ -6,58 +8,77 @@ interface PaginationProps {
 }
 
 function Pagination({numberOfPages, selectedPage, setSelectedPage}: PaginationProps) {
-    return (
-        <div>
+
+    const {theme} = useTheme();
+
+    const Button = ({disabled=false, onClick, children}: {
+        disabled?: boolean,
+        onClick: () => void,
+        children: ReactNode
+    }) => {
+
+        const darkTheme = `
+    bg-neutral-800 border-neutral-700 text-neutral-200
+    ${disabled ? `
+    bg-neutral-900 border-neutral-700 text-neutral-500
+    hover:border-neutral-700 hover:bg-neutral-900
+    ` : `
+    cursor-pointer hover:border-neutral-500 hover:bg-neutral-700
+    `}
+    
+    transition duration-300 ease-in-out
+    `
+        const lightTheme = `
+    bg-neutral-100 border-neutral-400 text-neutral-800
+    ${disabled ? `
+    bg-neutral-50 border-neutral-400 text-neutral-500
+    hover:border-neutral-400 hover:bg-neutral-100
+    ` : `
+    cursor-pointer hover:border-neutral-500 hover:bg-neutral-200
+    `}
+    transition duration-300 ease-in-out
+    `
+
+        return (
             <button
-                className={`
-                              join-item btn md:btn-square btn-sm-square border-0
-                              bg-neutral-700 text-neutral-100
-                            hover:bg-neutral-100 hover:text-neutral-800
-                              `}
+                className={theme === 'dark' ? darkTheme : lightTheme}
+                onClick={onClick}
+                disabled={disabled}
+            >
+                {children}
+            </button>
+        )
+    }
+
+    return (
+        <div className={`flex flex-row w-full items-center justify-center gap-3`}>
+            <Button
+                disabled={selectedPage === 0}
                 onClick={() => {
                     if (selectedPage > 0) {
                         setSelectedPage(selectedPage - 1)
                     }
                 }}
             >
-                {'<'}
-            </button>
-            <div className={'join mx-3'}>
                 {
-                    Array.from({length: numberOfPages}, (_, index) => {
-                        return (
-                            <button key={index}
-                                    className={`
-                                    hidden md:inline-block
-                                    join-item btn btn-sm-square
-                                    border-0
-                                    hover:bg-neutral-100 hover:text-neutral-800
-                                    ${selectedPage === index ?
-                                        'bg-neutral-100 text-neutral-800' :
-                                        'bg-neutral-700 text-neutral-100'
-                                    }`}
-                                    onClick={() => setSelectedPage(index)}
-                            >
-                                {index + 1}
-                            </button>
-                        )
-                    })
+                    selectedPage < numberOfPages - 1 ? 'Prev' : 'Back'
                 }
-            </div>
-            <button
-                className={`
-                              join-item btn md:btn-square btn-sm-square border-0
-                              bg-neutral-700 text-neutral-100
-                            hover:bg-neutral-100 hover:text-neutral-800
-                              `}
-                onClick={() => {
-                    if (selectedPage < numberOfPages - 1) {
-                        setSelectedPage(selectedPage + 1)
-                    }
-                }}
-            >
-                {'>'}
-            </button>
+            </Button>
+            {
+                selectedPage < numberOfPages-1 &&(
+                    <Button
+                        onClick={() => {
+                            if (selectedPage < numberOfPages - 1) {
+                                setSelectedPage(selectedPage + 1)
+                            }
+                        }}
+                    >
+                        {
+                            selectedPage === numberOfPages - 1 ? 'Finish' : 'Next'
+                        }
+                    </Button>
+                )
+            }
         </div>
     );
 }

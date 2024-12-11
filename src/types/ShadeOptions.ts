@@ -1,13 +1,10 @@
-export enum ShadePlacement {
-    Inside = 'Inside',
-    Outside = 'Outside'
-}
+import {Measurement} from "./Measurement.ts";
 
 export type ShadeOptions = {
-    shadePlacement: ShadePlacement;
+    shadePlacement: "inside" | "outside" | "";
     fabric: string;
-    width: number;
-    drop: number;
+    width: Measurement;
+    drop: Measurement;
     system: string;
     bottomRail: string;
 }
