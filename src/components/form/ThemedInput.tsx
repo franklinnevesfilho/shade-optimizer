@@ -2,7 +2,7 @@ import React from 'react';
 import {useTheme} from "../../hooks";
 
 interface ThemedInputProps {
-    value: never;
+    value: string | number | readonly string[] | undefined;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     type?: string;
     placeholder?: string;
