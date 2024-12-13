@@ -1,10 +1,10 @@
 import {Measurement} from "./Measurement.ts";
+import {BottomRailCollection, FabricCollection} from "./Components.ts";
 
 export type ShadeOptions = {
     shadePlacement: "inside" | "outside" | "";
-    fabric: string;
     width: Measurement;
     drop: Measurement;
-    system: string;
-    bottomRail: string;
+    fabric: FabricCollection | undefined;
+    bottomRail: BottomRailCollection | undefined;
 }

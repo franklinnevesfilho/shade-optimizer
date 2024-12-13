@@ -2,6 +2,8 @@ import {User} from "./User.ts";
 import {ShadeOptions} from "./ShadeOptions.ts";
 import {Measurement} from "./Measurement.ts";
 import {Theme} from "./Theme.ts";
+import {SystemOptions} from "./SystemOptions.ts";
+
 import {
     TubeCollection,
     FabricCollection,
@@ -21,4 +23,5 @@ export type {
     BottomRailCollection,
     SystemCollection,
     CollectionItem,
+    SystemOptions
 }

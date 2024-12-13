@@ -3,7 +3,7 @@ import {Dropdown} from "../index.ts";
 export const ShadeOption = ({label, options, selected, setSelected}:{
     label: string,
     options: string[],
-    selected: string,
+    selected?: string,
     setSelected: (value: string) => void
 }) => {
     return(

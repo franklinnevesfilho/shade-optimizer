@@ -47,7 +47,11 @@ const conversionTable: ConversionTable = {
     },
     "kg/m":{
         "g/m": 1000,
-        "g/mm": 1
+        "g/mm": 1,
+    },
+    'kg/m2': {
+        'g/m2': 1000,
+        'g/mm2': 1
     },
     "kg":{
         "N": 9.8,
@@ -68,15 +72,27 @@ const conversionTable: ConversionTable = {
 }
 
 export function convert(from:Measurement, to: string): Measurement {
-    if(from.unit === to) return from;
+    console.log("from", from)
 
-    if(!conversionTable[from.unit] || !conversionTable[from.unit][to]) {
-        throw new Error(`Conversion from ${from.unit} to ${to} is not supported`);
+    if(from.unit === to){
+        return {
+            value: from.value,
+            unit: to
+        } as Measurement;
     }
-    const conversionFactor = conversionTable[from.unit][to];
+
+    try{
+        const value = from.value * conversionTable[from.unit][to];
+        return {
+            value,
+            unit: to
+        } as Measurement
+    } catch (e){
+        console.error("Conversion not possible", e)
+    }
 
     return {
-        value: from.value * conversionFactor,
+        value: 0,
         unit: to
-    }
+    } as Measurement;
 }

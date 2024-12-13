@@ -3,6 +3,7 @@ import {ShadeOptions} from "../../types";
 import {useState} from "react";
 import Specifics from "./Specifics.tsx";
 import Style from "./Style.tsx";
+import Systems from "./Systems.tsx";
 
 
 function ShadeBuilder() {
@@ -17,9 +18,8 @@ function ShadeBuilder() {
             value: 0,
             unit: ''
         },
-        fabric: '',
-        bottomRail: '',
-        system: ''
+        fabric: undefined,
+        bottomRail: undefined,
     })
 
 
@@ -133,6 +133,10 @@ function ShadeBuilder() {
                 bottomRail: value.bottomRail
             })}
             onNext={handleNext}
+            onPrev={handlePrev}
+        />,
+        <Systems
+            shadeOptions={shadeOptions}
             onPrev={handlePrev}
         />
     ]

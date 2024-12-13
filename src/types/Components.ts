@@ -8,6 +8,7 @@ export type CollectionItem = {
 
 export type FabricCollection = {
     name: string;
+    isNeolux?: boolean;
     placement: "inside" | "outside";
     thickness: Measurement;
     weight: Measurement;
@@ -18,8 +19,8 @@ export type TubeCollection = {
     name: string;
     modulus: Measurement;
     density: Measurement;
-    insideDiameter: Measurement;
-    outsideDiameter: Measurement;
+    inner_diameter: Measurement;
+    outside_diameter: Measurement;
     items: CollectionItem[];
 }
 

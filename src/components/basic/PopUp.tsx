@@ -1,9 +1,9 @@
-import React from 'react';
+import {ReactNode} from 'react';
 import Title from './Title.tsx';
 import {useTheme} from "../../hooks";
 
 export interface PopUpProps {
-    children: React.ReactNode;
+    children: ReactNode;
     title?: string;
     style?: string;
     onClose: (state: boolean) => void;

@@ -2,7 +2,7 @@ import {useTheme} from "../../hooks";
 
 interface DropdownProps {
     options: string[];
-    selected: string;
+    selected?: string;
     setSelected: (value: string) => void;
     placeholder?: string;
 }
@@ -29,13 +29,16 @@ function Dropdown({ options, selected, setSelected, placeholder }: DropdownProps
                     flex items-center justify-between
                 `}
                 value={selected}
-                onChange={(e) => setSelected(e.target.value)}
+                onChange={(e) => {
+                    setSelected(e.target.value)
+                }}
             >
                 <option
                     className={`
                         text-neutral-400 
                     `}
-                    value="" selected disabled>
+                    value=""
+                    disabled>
                     {placeholder || 'Select an option'}
                 </option>
                 {options.map((option, index) => (
