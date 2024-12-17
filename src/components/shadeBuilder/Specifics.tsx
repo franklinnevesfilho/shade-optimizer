@@ -1,6 +1,5 @@
-import QuestionTemplate, {QuestionsProps} from "./QuestionTemplate.tsx";
-// import ToggleBtn from "../basic/ToggleBtn.tsx";
 import MeasurementInput from "../form/MeasurementInput.tsx";
+import QuestionTemplate, {QuestionsProps} from "./QuestionTemplate.tsx";
 
 
 interface SpecificsProps extends QuestionsProps{
@@ -36,18 +35,6 @@ function Specifics({specifics, setSpecifics, onNext, ...props}: SpecificsProps) 
             {...props}
         >
             <div className={`flex flex-col justify-center items-center gap-3`}>
-                {/*<div className={`flex flex-row justify-center items-center gap-3`}>*/}
-                {/*     <ToggleBtn*/}
-                {/*         isToggled={specifics.shadePlacement === 'inside'}*/}
-                {/*            onClick={() => setSpecifics({...specifics, shadePlacement: 'inside'})}*/}
-                {/*         style={`text-xl p-2`}> Inside </ToggleBtn>*/}
-                {/*    or*/}
-                {/*    <ToggleBtn*/}
-                {/*        isToggled={specifics.shadePlacement === 'outside'}*/}
-                {/*        onClick={() => setSpecifics({...specifics, shadePlacement: 'outside'})}*/}
-                {/*        style={`text-xl p-2`}> Outside </ToggleBtn>*/}
-                {/*    shade placement?*/}
-                {/*</div>*/}
                 <MeasurementInput
                     label={"Width"}
                     setMeasurement={(width) => {

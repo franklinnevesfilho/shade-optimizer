@@ -1,11 +1,12 @@
 import ShadeBuilder from "../components/shadeBuilder/ShadeBuilder.tsx";
 import {useState} from "react";
 import Tabs from "../components/basic/Tabs.tsx";
+import TubeLimits from "../components/tubeLimits/TubeLimits.tsx";
 
 
 function Home() {
 
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedTab, setSelectedTab] = useState(1);
 
     const tabs = [
         {
@@ -14,7 +15,7 @@ function Home() {
         },
         {
             name: "Tube Limits",
-            component: <div>Tube Limits</div>
+            component: <TubeLimits/>
         }]
 
     return (

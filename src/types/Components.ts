@@ -12,7 +12,7 @@ export type FabricCollection = {
     placement: "inside" | "outside";
     thickness: Measurement;
     weight: Measurement;
-    items: CollectionItem[];
+    items?: CollectionItem[];
 }
 
 export type TubeCollection = {
@@ -21,13 +21,13 @@ export type TubeCollection = {
     density: Measurement;
     inner_diameter: Measurement;
     outside_diameter: Measurement;
-    items: CollectionItem[];
+    items?: CollectionItem[];
 }
 
 export type BottomRailCollection = {
     name: string;
     weight: Measurement;
-    items: CollectionItem[];
+    items?: CollectionItem[];
 }
 
 export type SystemCollection = {
