@@ -1,4 +1,4 @@
-import ShadeBuilder from "../components/ShadeBuilder/ShadeBuilder.tsx";
+import ShadeBuilder from "../components/shadeBuilder/ShadeBuilder.tsx";
 import {useState} from "react";
 import Tabs from "../components/basic/Tabs.tsx";
 
