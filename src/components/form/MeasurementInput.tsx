@@ -28,8 +28,10 @@ function MeasurementInput({label, setMeasurement, measurement}: MeasurementInput
                 type="number"
                 value={measurement.value}
                 onChange={(e) => {
-                    const value = parseInt(e.target.value);
-                    setMeasurement({...measurement, value})
+                    const value = parseFloat(e.target.value);
+                    if (!isNaN(value)) {
+                        setMeasurement({...measurement, value})
+                    }
                 }}
 
                 min={0}
