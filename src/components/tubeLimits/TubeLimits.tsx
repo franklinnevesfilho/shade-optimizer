@@ -90,7 +90,7 @@ function TubeLimits() {
                     <div className="flex flex-col md:flex-row w-full items-center justify-between gap-3">
                         <SelectOption
                             label="Width Unit:"
-                            options={['mm', 'cm', 'm']}
+                            options={['mm', 'cm', 'in', 'm', 'ft']}
                             selectedOption={widthUnit}
                             setOptions={(value) => setWidthUnit(value)}
                         />
