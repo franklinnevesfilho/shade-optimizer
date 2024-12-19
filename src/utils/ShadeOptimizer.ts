@@ -129,7 +129,7 @@ function getTubeDeflection(fabric:FabricCollection, bottomRail: BottomRailCollec
 
     const deflection = (5 * W.value * Math.pow(L.value, 3)) / (384 * E.value * I.value)
 
-    return convert({ value: deflection, unit: unit }, unit)
+    return convert({ value: deflection, unit: 'mm' }, unit)
 }
 
 

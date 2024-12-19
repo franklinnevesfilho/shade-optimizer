@@ -1,28 +1,10 @@
 "use client";
 import "chart.js/auto";
 import {Line} from "react-chartjs-2";
+import {ChartData} from "chart.js";
 
 export interface BarChartProps {
-    data: {
-        labels: string[] | number[];
-        datasets: (
-            {
-                label: string;
-                data: number[];
-                fill: boolean;
-                borderColor: string;
-                backgroundColor?: string;
-            } |
-            {
-                label: string;
-                data: number[];
-                fill: boolean;
-                backgroundColor: string;
-                borderColor?: string;
-            }
-            )[];
-    };
-
+    data: ChartData<"line", number[], number>;
     title?: string;
     xLabel?: string;
     yLabel?: string;
