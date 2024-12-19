@@ -2,6 +2,7 @@
 import "chart.js/auto";
 import {Line} from "react-chartjs-2";
 import {ChartData} from "chart.js";
+import {useTheme} from "../../hooks";
 
 export interface BarChartProps {
     data: ChartData<"line", number[], number>;
@@ -12,14 +13,14 @@ export interface BarChartProps {
 
 
 function LineChart(props:BarChartProps) {
-    const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const {theme} = useTheme();
 
     const getGridColor = () => {
-        return prefersDarkMode? 'rgba(255,255,255,0.3)': 'rgba(0,0,0,0.3)';
+        return theme === 'dark'? 'rgba(255,255,255,0.2)': 'rgba(0,0,0,0.2)';
     }
 
     const getTextColor = () => {
-        return prefersDarkMode? 'rgba(255,255,255,1)': 'rgba(0,0,0,1)';
+        return theme === 'dark'? 'rgba(255,255,255,0.8)': 'rgba(0,0,0,0.8)';
     }
 
     const chartOptions = {

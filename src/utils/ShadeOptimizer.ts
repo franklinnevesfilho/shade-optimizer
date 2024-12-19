@@ -168,9 +168,8 @@ function getSystemLimit(system: SystemCollection, fabric: FabricCollection, tube
     }
 }
 
-function round(value: number){
-   // round to the nearest 100th
-    return Math.round(value * 100) / 100
+const round = (value: number) => {
+    return Math.round((value + Number.EPSILON) * 100) / 100
 }
 
 
@@ -225,5 +224,6 @@ export {
     getTotalLoad,
     getTubeDeflection,
     getSystemLimit,
+    round,
     getSystems
 }

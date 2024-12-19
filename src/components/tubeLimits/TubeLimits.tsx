@@ -6,9 +6,7 @@ import {BottomRailOptions, FabricOptions} from "./BaseOptions.ts";
 import {Dropdown} from "../index.ts";
 import {collection, getDocs} from "firebase/firestore";
 import {firebaseDB} from "../../../firebase.config.ts";
-import {getTubeDeflection} from "../../utils/ShadeOptimizer.ts";
-import {convert} from "../../utils/MeasurementConverter.ts";
-import LineChart from "./LineChart.tsx";
+import {TubeChart} from "./TubeChart.tsx";
 
 function TubeLimits() {
     const [selectedFabric, setSelectedFabric] = useState<FabricCollection | undefined>(undefined);
@@ -20,8 +18,8 @@ function TubeLimits() {
 
     const SelectOption = ({label, options, placeholder, selectedOption, setOptions}: {
         label: string,
-        options: FabricCollection[] | BottomRailCollection[],
-        selectedOption: FabricCollection | BottomRailCollection | undefined,
+        options: string[],
+        selectedOption: string | undefined,
         setOptions: (value: string) => void,
         placeholder?: string
     }) => {
@@ -30,8 +28,8 @@ function TubeLimits() {
             <div className="flex flex-row items-center justify-center gap-3 ">
                 <div className={`text-2xl`}>{label}</div>
                 <Dropdown
-                    options={options.map(option => option.name)}
-                    selected={selectedOption?.name || ""}
+                    options={options}
+                    selected={selectedOption || ""}
                     setSelected={(value) => setOptions(value)}
                     placeholder={placeholder}
                 />
@@ -39,61 +37,6 @@ function TubeLimits() {
         )
     }
 
-    const round = (value: number) => {
-        return Math.round((value + Number.EPSILON) * 100) / 100
-    }
-
-    const TubeChart = ({tube}:{tube:TubeCollection}) =>{
-
-        const lengths = [
-            0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4
-        ];
-
-        const data = {
-            labels: lengths.map((length)=> round(convert({value:length, unit:"m"}, widthUnit).value)),
-            datasets: [
-                {
-                    label: `Deflection (${deflectionUnit})`,
-                    data: lengths.map((length) => {
-                        return getTubeDeflection(
-                            selectedFabric! || FabricOptions[0],
-                            selectedBottomRail! || BottomRailOptions[0],
-                            tube,
-                            {value: length, unit: 'm'}, // width
-                            {value: 3, unit: 'm'}, // drop
-                            deflectionUnit).value
-                    }),
-                    fill: false,
-                    backgroundColor: 'rgb(0, 0, 255)',
-                    borderColor: 'rgba(0, 0, 255, 0.2)',
-                },
-                {
-                    label: `Limit (${deflectionUnit})`,
-                    data: lengths.map(() => {
-                        return convert({value: 2.99, unit: 'mm'}, deflectionUnit).value
-                    }),
-                    fill: false,
-                    backgroundColor: 'rgba(255, 0, 0, 0.5)',
-                    borderColor: 'rgba(255,0, 0, 0.2)',
-                }
-            ],
-        }
-
-        return(
-            <div className="flex flex-col flex-wrap items-center justify-center border rounded-lg p-3">
-                <div className="text-2xl">{tube.name}</div>
-                <div className="flex flex-col items-center justify-center">
-                    <div className="div">
-                        <LineChart
-                            data={data}
-                            xLabel={`Width (${widthUnit})`}
-                            yLabel={`Deflection (${deflectionUnit})`}
-                        />
-                    </div>
-                </div>
-            </div>
-        )
-    }
 
     useEffect(()=>{
         const getTubes = async () => {
@@ -127,8 +70,8 @@ function TubeLimits() {
                     <div className="flex flex-col md:flex-row w-full items-center justify-between">
                         <SelectOption
                             label="Fabric:"
-                            options={FabricOptions}
-                            selectedOption={selectedFabric}
+                            options={FabricOptions.map(fabric => fabric.name)}
+                            selectedOption={selectedFabric?.name}
                             setOptions={(value) => {
                                 setSelectedFabric(FabricOptions.find(fabric => fabric.name === value))
                             }}
@@ -136,8 +79,8 @@ function TubeLimits() {
                         />
                         <SelectOption
                             label="Bottom Rail:"
-                            options={BottomRailOptions}
-                            selectedOption={selectedBottomRail}
+                            options={BottomRailOptions.map(bottomRail => bottomRail.name)}
+                            selectedOption={selectedBottomRail?.name}
                             setOptions={(value) => {
                                 setSelectedBottomRail(BottomRailOptions.find(bottomRail => bottomRail.name === value))
                             }}
@@ -145,24 +88,18 @@ function TubeLimits() {
                         />
                     </div>
                     <div className="flex flex-col md:flex-row w-full items-center justify-between gap-3">
-                        <div className={'flex flex-row gap-3'}>
-                            <span className={`text-2xl`}>Width Unit:</span>
-                            <Dropdown
-                                options={['mm', 'm', 'cm', 'in', 'ft']}
-                                selected={widthUnit}
-                                setSelected={(value) => setWidthUnit(value)}
-                                placeholder={"Select Unit"}
-                            />
-                        </div>
-                        <div className={'flex flex-row gap-3'}>
-                            <span className={`text-2xl`}>Deflection Unit:</span>
-                            <Dropdown
-                                options={['mm', 'cm', 'in']}
-                                selected={deflectionUnit}
-                                setSelected={(value) => setDeflectionUnit(value)}
-                                placeholder={"Select Unit"}
-                            />
-                        </div>
+                        <SelectOption
+                            label="Width Unit:"
+                            options={['mm', 'cm', 'm']}
+                            selectedOption={widthUnit}
+                            setOptions={(value) => setWidthUnit(value)}
+                        />
+                        <SelectOption
+                            label="Deflection Unit:"
+                            options={['mm', 'cm', 'in', 'm', 'ft']}
+                            selectedOption={deflectionUnit}
+                            setOptions={(value) => setDeflectionUnit(value)}
+                        />
                     </div>
                     <div className="text-sm">*All Measurements are calculated with a drop of <span className={`italic`}>9.8 FT | 3 M</span></div>
                 </div>
@@ -175,7 +112,14 @@ function TubeLimits() {
                 className="flex flex-row flex-wrap mt-3 items-center justify-center gap-3 w-full h-3/5 overflow-y-scroll">
                 {
                     tubes.map((tube, index) => (
-                        <TubeChart key={index} tube={tube}/>
+                        <TubeChart
+                            key={index}
+                            tube={tube}
+                            widthUnit={widthUnit}
+                            deflectionUnit={deflectionUnit}
+                            selectedFabric={selectedFabric}
+                            selectedBottomRail={selectedBottomRail}
+                        />
                     ))
                 }
             </div>
