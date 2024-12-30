@@ -2,7 +2,7 @@ import { useAuth } from "../hooks";
 import DefaultButton from "./basic/DefaultButton.tsx";
 import { useTheme } from "../hooks";
 import { HamburgerBtn } from "./index.ts";
-import { useState } from "react";
+import {useState} from "react";
 
 function AdminNav() {
     const [showMenu, setShowMenu] = useState(false);
@@ -18,20 +18,39 @@ function AdminNav() {
     const borderColor = getThemeClasses("border-neutral-300", "border-neutral-700");
     const hoverColor = getThemeClasses("hover:border-neutral-400", "hover:border-neutral-500");
 
+    const pages: {title: string, link: string}[] = [
+        {
+            title: "Home",
+            link: ''
+        },
+        {
+            title: "Bottom Rails",
+            link: ''
+        },
+        {
+            title: "Fabrics",
+            link: ''
+        },
+        {
+            title: "Tubes",
+            link: ''
+        },
+        {
+            title: "Systems",
+            link: ''
+        }
+    ]
+
     return (
         <div>
-            <div className={`
-            fixed top-10 left-0 transition-transform duration-300 z-30
-            `}>
-                <HamburgerBtn
-                    style={`
+            <HamburgerBtn
+                style={`
                     border-none ${bgColor}
                     `}
-                    state={showMenu}
-                    onToggle={() => setShowMenu((prev) => !prev)}
-                    aria-expanded={showMenu}
-                />
-            </div>
+                state={showMenu}
+                onToggle={() => setShowMenu((prev) => !prev)}
+                aria-expanded={showMenu}
+            />
 
             {/* Side Navigation */}
             <div
@@ -44,6 +63,15 @@ function AdminNav() {
                 mt-16
                 flex flex-col gap-5 p-5
                 `}>
+                    {
+                        pages.map((page, index) => (
+                            <DefaultButton
+                                key={index}
+                            >
+                                {page.title}
+                            </DefaultButton>
+                        ))
+                    }
                     <DefaultButton
                         onClick={() => {
                             logout();
