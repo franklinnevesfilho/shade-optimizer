@@ -48,7 +48,14 @@ function TubeLimits() {
                 tubes.push(tube)
             });
 
-            setTubes(tubes);
+        //     set tubes in increasing order first two characters are numbers
+            tubes.sort((a,b) => {
+                const aNum = parseInt(a.name.slice(0,2))
+                const bNum = parseInt(b.name.slice(0,2))
+                return aNum - bNum
+            })
+
+            setTubes(tubes)
         }
 
         getTubes();
