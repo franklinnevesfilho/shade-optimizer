@@ -2,6 +2,7 @@ import ShadeBuilder from "../components/shadeBuilder/ShadeBuilder.tsx";
 import {useState} from "react";
 import Tabs from "../components/basic/Tabs.tsx";
 import TubeLimits from "../components/tubeLimits/TubeLimits.tsx";
+import MaxWidth from "../components/maxWidth/MaxWidth.tsx";
 
 
 function Home() {
@@ -16,7 +17,12 @@ function Home() {
         {
             name: "Tube Limits",
             component: <TubeLimits/>
-        }]
+        },
+        {
+            name: "Max Width",
+            component: <MaxWidth/>
+        }
+        ]
 
     return (
         <div className={`

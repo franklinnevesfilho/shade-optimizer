@@ -72,7 +72,6 @@ const conversionTable: ConversionTable = {
 }
 
 export function convert(from:Measurement, to: string): Measurement {
-    console.log("from", from)
 
     if(from.unit === to){
         return {

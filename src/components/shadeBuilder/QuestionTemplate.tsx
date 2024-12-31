@@ -11,6 +11,7 @@ interface QuestionTemplateProps {
     title: string,
     answered?: boolean
     children?: React.ReactNode
+    style?: string
     onNext?: () => void
     onPrev?: () => void
     errorMsg?: string
@@ -19,6 +20,7 @@ function QuestionTemplate(
     {
         title,
         children,
+        style,
         onPrev,
         onNext,
         answered = false,
@@ -84,7 +86,7 @@ function QuestionTemplate(
                 <div className={`flex flex-row text-2xl italic border-b px-3`}>
                     {title}
                 </div>
-                <div className="flex flex-col justify-center items-center gap-3">
+                <div className={`flex flex-col justify-center items-center gap-3 ${style}`}>
                     {children}
                 </div>
                 <div className={`mt-auto flex flex-row gap-3`}>

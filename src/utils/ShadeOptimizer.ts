@@ -30,7 +30,6 @@ function getRollUpDiameter(drop: Measurement, tubeOuterDiameter: Measurement, fa
 }
 
 function getMaxDrop(maxRollUp: Measurement, tubOuterDiameter: Measurement, fabricThickness: Measurement, unit: string = 'mm'){
-    console.log("Get Max Roll up")
     maxRollUp = convert(maxRollUp, unit);
     tubOuterDiameter = convert(tubOuterDiameter, unit);
     fabricThickness = convert(fabricThickness, unit);
@@ -43,7 +42,6 @@ function getMaxDrop(maxRollUp: Measurement, tubOuterDiameter: Measurement, fabri
 }
 
 function getMomentOfInertia(tube: TubeCollection){
-    console.log("Tube", tube)
     let innerDiameter = convert(tube.inner_diameter, tube.outside_diameter.unit);
 
     let tubeThickness = {
@@ -53,7 +51,10 @@ function getMomentOfInertia(tube: TubeCollection){
     tubeThickness = convert(tubeThickness, 'mm');
     innerDiameter = convert(innerDiameter, 'mm');
 
-    const moment = (Math.PI * ((Math.pow(innerDiameter.value, 4)) - (Math.pow((innerDiameter.value - (2 * tubeThickness.value)), 4)))) / 64;
+    const moment =
+        (Math.PI * ((Math.pow(innerDiameter.value, 4)) -
+            (Math.pow((innerDiameter.value -
+                (2 * tubeThickness.value)), 4)))) / 64;
 
     return {
         value: moment,
@@ -101,14 +102,10 @@ function getTotalLoad(fabric:FabricCollection, bottomRail:BottomRailCollection, 
     width = convert(width, 'm');
 
     let fabricWeight = getFabricWeight(fabric, width, drop);
-    console.log("fabricWeight", fabricWeight)
     fabricWeight = convert(fabricWeight, 'N');
-    console.log("fabricWeight in N:", fabricWeight)
 
     let bottomRailWeight = getBottomRailWeight(bottomRail, width);
-    console.log("bottomRailWeight", bottomRailWeight)
     bottomRailWeight = convert(bottomRailWeight, 'N');
-    console.log("bottomRailWeight in N:", bottomRailWeight)
 
     return {
         value: fabricWeight.value + bottomRailWeight.value,
@@ -118,30 +115,23 @@ function getTotalLoad(fabric:FabricCollection, bottomRail:BottomRailCollection, 
 
 function getTubeDeflection(fabric:FabricCollection, bottomRail: BottomRailCollection, tube:TubeCollection, width:Measurement, drop:Measurement, unit: string = 'mm'){
     const L = convert(width, 'mm')
-    console.log("L", L)
     const E = convert(tube.modulus, 'N/mm2')
-    console.log("E", E)
 
     const W = getTotalLoad(fabric, bottomRail, width, drop)
-    console.log("W", W)
     const I = getMomentOfInertia(tube)
-    console.log("I", I)
 
     const deflection = (5 * W.value * Math.pow(L.value, 3)) / (384 * E.value * I.value)
 
     return convert({ value: deflection, unit: 'mm' }, unit)
 }
 
-
-function getSystemLimit(system: SystemCollection, fabric: FabricCollection, tube: TubeCollection, bottomRail: BottomRailCollection){
+function getMaxWidth(fabric:FabricCollection, tube:TubeCollection, bottomRail:BottomRailCollection, drop:Measurement){
     const maxDeflection = 2.99
 
-    let maxDrop = getMaxDrop(system.maxDiameter, tube.outside_diameter, fabric.thickness)
-    maxDrop = convert(maxDrop, 'mm')
-
-    let fabricWeight = convert(fabric.weight, 'g/mm2')
+    drop = convert(drop, 'm')
+    let fabricWeight = convert(fabric.weight, 'g/m2')
     fabricWeight = {
-        value: fabricWeight.value * maxDrop.value,
+        value: (fabricWeight.value * drop.value) / 1000,
         unit: 'g/mm'
     }
 
@@ -149,7 +139,7 @@ function getSystemLimit(system: SystemCollection, fabric: FabricCollection, tube
 
     let W = {
         value: fabricWeight.value + bottomRailWeight.value,
-        unit: 'g/mm'
+        unit: 'g'
     }
 
     W = convert(W, 'N')
@@ -157,26 +147,32 @@ function getSystemLimit(system: SystemCollection, fabric: FabricCollection, tube
     const I = getMomentOfInertia(tube)
     const E = convert(tube.modulus, 'N/mm2')
 
-    const maxWidth = Math.pow((maxDeflection * 384 * E.value * I.value) / (5 * W.value), 1/4)
-
+    const maxWidth =
+        Math.pow((maxDeflection * 384 * E.value * I.value) / (5 * W.value), 1/4)
     return{
-        maxDrop: maxDrop,
-        maxWidth:{
             value: maxWidth,
             unit: 'mm'
-        }
+    }
+}
+
+function getSystemLimit(system: SystemCollection, fabric: FabricCollection, tube: TubeCollection, bottomRail: BottomRailCollection){
+    let maxDrop = getMaxDrop(system.maxDiameter, tube.outside_diameter, fabric.thickness)
+    maxDrop = convert(maxDrop, 'mm')
+
+    return {
+        maxDrop: maxDrop,
+        maxWidth: getMaxWidth(fabric, tube, bottomRail, maxDrop)
     }
 }
 
 const round = (value: number) => {
-    return Math.round((value + Number.EPSILON) * 100) / 100
+    return Number(value.toPrecision(2))
 }
 
 
 function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCollection[], shadeOptions: ShadeOptions): SystemOptions[]{
     const results : SystemOptions[] = []
 
-    console.log("shadeOptions", shadeOptions)
 
     if (shadeOptions.fabric === undefined || shadeOptions.bottomRail === undefined){
         return []
@@ -225,5 +221,6 @@ export {
     getTubeDeflection,
     getSystemLimit,
     round,
-    getSystems
+    getSystems,
+    getMaxWidth
 }

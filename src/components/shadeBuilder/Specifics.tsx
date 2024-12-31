@@ -28,7 +28,7 @@ function Specifics({specifics, setSpecifics, onNext, ...props}: SpecificsProps) 
 
     return (
         <QuestionTemplate
-            title={'Shade Specifics'}
+            title={'Shade Sizing'}
             answered={fullyAnswered}
             onNext={onNext}
             errorMsg={errorMsg}

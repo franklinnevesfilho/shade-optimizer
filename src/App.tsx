@@ -10,14 +10,17 @@ function App() {
   return (
       <Router>
           <AuthProvider>
-
-              <div className={`flex flex-col justify-center items-center w-screen h-screen`}>
-                  <Header/>
-                  <Routes>
-                        <Route path="/" element={
-                            <Home/>
-                        }/>
-                  </Routes>
+              <div className={`justify-center items-center w-screen h-screen`}>
+                  <div className={'w-full'}>
+                      <Header/>
+                  </div>
+                  <div className={`
+                    w-full h-full flex flex-col items-center justify-center          
+                  `}>
+                      <Routes>
+                          <Route path="/" element={<Home/>}/>
+                      </Routes>
+                  </div>
               </div>
           </AuthProvider>
       </Router>

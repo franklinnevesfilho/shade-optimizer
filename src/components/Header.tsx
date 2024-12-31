@@ -12,33 +12,33 @@ function Header() {
     const [toggle, setToggle] = useState(false);
 
     return (
-        <>
-            <div className={`
-            flex justify-center items-center w-[95%] h-20 text-white mb-auto
-            mt-5 ${authUser && 'flex-col md:flex-row'}
-            `}>
-
-                <div className="w-full flex flex-row justify-between ">
-                    {
-                        authUser &&
+        <div
+            className={`w-full h-20 flex justify-around md:justify-end items-center`}
+        >
+            <div className="flex md:w-10/12 items-center justify-center">
+                <Title>Vertilux's Shade Optimizer</Title>
+            </div>
+            <div className="flex md:w-1/12">
+                {
+                    authUser ? (
                         <AdminNav/>
-                    }
-
-                    <Title style={`mx-auto`}>Vertilux's Shade Optimizer</Title>
-                    {!authUser &&
+                    ) : (
                         <DefaultButton
                             onClick={() => setToggle(true)}
                         >
                             Login
                         </DefaultButton>
-                    }
-                </div>
+                    )
+                }
+                {
+                    toggle && (
+                        <LoginCard
+                            onClose={() => setToggle(false)}
+                        />
+                    )
+                }
             </div>
-            {
-                toggle &&
-                <LoginCard onClose={() => setToggle(false)}/>
-            }
-        </>
+        </div>
     );
 }
 

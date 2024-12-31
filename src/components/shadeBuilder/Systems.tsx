@@ -2,7 +2,6 @@ import {useState, useEffect} from "react";
 import {ShadeOption} from "./ShadeOptions.tsx";
 import QuestionTemplate, {QuestionsProps} from "./QuestionTemplate.tsx";
 import {collection, getDocs} from "firebase/firestore";
-import ThemedText from "../basic/ThemedText.tsx";
 import {firebaseDB} from "../../../firebase.config.ts";
 import {Measurement, ShadeOptions, SystemCollection, SystemOptions, TubeCollection} from "../../types";
 import {getSystems} from "../../utils/ShadeOptimizer.ts";
@@ -47,8 +46,8 @@ function Systems({shadeOptions, ...props}: SystemsProps) {
 
     const TubeCard = ({tube, deflection}:{tube:TubeCollection, deflection:Measurement}) => {
         return (
-            <div className={`flex flex-col border p-2 rounded-lg gap-1 w-2/5`}>
-                <div>Tube: {tube.name}</div>
+            <div className={`flex flex-col border p-2 rounded-lg`}>
+                <div>Tube: <span className={`font-bold`}>{tube.name}</span></div>
                 <div>Deflection: {deflection.value.toPrecision(2)} {deflection.unit}</div>
             </div>
         )
@@ -57,36 +56,34 @@ function Systems({shadeOptions, ...props}: SystemsProps) {
     return (
         <QuestionTemplate
             title={'Available Systems'}
+            style={`
+            w-full h-full
+            `}
             answered={answered}
             {...props}
         >
             <ShadeOption
-                label={"System"}
                 options={systemOptions.map((system) => system.system.name)}
                 selected={selectedSystem?.system.name || ''}
                 setSelected={(system) => {
                     setSelectedSystem(systemOptions.find((option) => option.system.name === system))
                 }}
             />
-            {
-                answered &&
-                // make the div scrollable
-                <div className={`
-                flex flex-col gap-2
-                overflow-y-auto w-full h-96
-                `}>
-                    <ThemedText>Tube Options</ThemedText>
-                    <div className="flex flex-row w-full flex-wrap justify-center items-center h-full gap-3">
-                        {
-                            selectedSystem?.options.map((option, index) => {
-                                return(
-                                    <TubeCard key={index} tube={option.tube} deflection={option.deflection}/>
-                                )
-                            })
-                        }
-                    </div>
+            <div className="flex flex-col gap-5 justify-start items-center border-t-2 p-2 w-full h-full ">
+                <div className={` flex flex-col gap-2 w-[80%]
+                p-2 pb-0 border-b italic text-lg font-bold justify-center items-center 
+                `}>Tubes: </div>
+
+                <div className={`flex flex-row gap-2 w-full justify-center items-center `}>
+                    {
+                        selectedSystem?.options.map((option, index) => {
+                            return (
+                                <TubeCard key={index} tube={option.tube} deflection={option.deflection}/>
+                            )
+                        })
+                    }
                 </div>
-            }
+            </div>
         </QuestionTemplate>
     );
 }
