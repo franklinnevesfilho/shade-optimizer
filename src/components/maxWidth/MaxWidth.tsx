@@ -79,6 +79,12 @@ function MaxWidth() {
                 systemOptions.push(system);
             });
 
+            tubeOptions.sort((a,b) => {
+                const aNum = parseInt(a.name.slice(0,2))
+                const bNum = parseInt(b.name.slice(0,2))
+                return aNum - bNum
+            })
+
             setFabrics(fabricOptions);
             setBottomRails(bottomRailOptions);
             setTubes(tubeOptions);
