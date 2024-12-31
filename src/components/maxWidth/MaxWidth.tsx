@@ -6,6 +6,7 @@ import {DefaultButton, Dropdown} from "../index.ts";
 import {getMaxWidth, getRollUpDiameter, round} from "../../utils/ShadeOptimizer.ts";
 import MeasurementInput from "../form/MeasurementInput.tsx";
 import QuestionTemplate from "../shadeBuilder/QuestionTemplate.tsx";
+import {convert} from "../../utils/MeasurementConverter.ts";
 
 interface ShadeInfo {
     drop: Measurement;
@@ -154,14 +155,14 @@ function MaxWidth() {
                 <div>
                     {
                         maxWidth.value > 0 ?
-                            `Max Width: ${round(maxWidth.value)} ${maxWidth.unit}`
+                            `Max Width: ${round(convert(maxWidth, shadeInfo.drop.unit).value)} ${shadeInfo.drop.unit}`
                             : "Please select all options to calculate max width"
                     }
                 </div>
                 <div>
                     {
                         rollUpDiameter.value > 0 ?
-                            `Roll Up Diameter: ${round(rollUpDiameter.value)} ${rollUpDiameter.unit}`
+                            `Roll Up Diameter: ${round(convert(rollUpDiameter, shadeInfo.drop.unit).value)} ${shadeInfo.drop.unit}`
                             : "Please select all options to calculate roll up diameter"
                     }
                 </div>
