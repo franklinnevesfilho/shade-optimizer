@@ -15,7 +15,6 @@ function Systems({shadeOptions, ...props}: SystemsProps) {
     const [systemOptions, setSystemOptions] = useState<SystemOptions[]>([]);
     const [selectedSystem, setSelectedSystem] = useState<SystemOptions | undefined>(undefined)
 
-
     useEffect(() => {
         const getOptions = async () => {
             const systemOptions:SystemCollection[] = [];
@@ -75,7 +74,7 @@ function Systems({shadeOptions, ...props}: SystemsProps) {
                 p-2 pb-0 border-b italic text-lg font-bold justify-center items-center 
                 `}>Tubes: </div>
 
-                <div className={`flex flex-row gap-2 w-full justify-center items-center `}>
+                <div className={`flex flex-row flex-wrap gap-2 w-full justify-center items-center `}>
                     {
                         selectedSystem?.options.map((option, index) => {
                             return (
