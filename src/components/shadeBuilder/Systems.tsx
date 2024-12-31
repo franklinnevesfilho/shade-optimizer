@@ -34,6 +34,7 @@ function Systems({shadeOptions, ...props}: SystemsProps) {
             });
 
             const systemConfig = getSystems(tubes, systemOptions, shadeOptions)
+
             setSystemOptions(systemConfig);
         }
 

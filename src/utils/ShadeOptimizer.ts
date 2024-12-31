@@ -209,6 +209,15 @@ function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCo
             }
         }
 
+        // sort tubes in increasing order
+        results.map((system)=>{
+            system.options.sort((a,b)=>{
+                const aNum = parseInt(a.tube.name.slice(0,2))
+                const bNum = parseInt(b.tube.name.slice(0,2))
+                return aNum - bNum
+            })
+        })
+
         return results
     }
 }
