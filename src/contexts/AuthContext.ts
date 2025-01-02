@@ -1,16 +1,22 @@
-import React from "react";
+import {createContext} from "react";
 import {User} from "../types";
 
-type AuthContextType = {
+export interface AuthContextType {
     authUser: User | null;
-    signIn: (email: string, password: string, completedFn: ()=> void) => void;
-    logout: () => void;
     loading: boolean;
+    isInitializing: boolean;
+    signIn: (email: string, password: string, onComplete?: () => void) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
-export const AuthContext = React.createContext<AuthContextType>({
+// Create a default context value
+const defaultAuthContext: AuthContextType = {
     authUser: null,
-    signIn: () => {},
-    logout: () => {},
-    loading: false
-});
+    loading: false,
+    isInitializing: true,
+    signIn: async () => {},
+    logout: async () => {},
+};
+
+
+export const AuthContext = createContext<AuthContextType>(defaultAuthContext);

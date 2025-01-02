@@ -4,6 +4,7 @@ import {Header} from "./components"
 
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import Home from "./screens/Home.tsx";
+import AdminPage from "./screens/AdminPage.tsx";
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
                   `}>
                       <Routes>
                           <Route path="/" element={<Home/>}/>
+                          <Route path="/admin" element={<AdminPage/>}/>
                       </Routes>
                   </div>
               </div>

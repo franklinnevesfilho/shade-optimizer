@@ -7,7 +7,7 @@ import MaxWidth from "../components/maxWidth/MaxWidth.tsx";
 
 function Home() {
 
-    const [selectedTab, setSelectedTab] = useState(1);
+    const [selectedTab, setSelectedTab] = useState(0);
 
     const tabs = [
         {

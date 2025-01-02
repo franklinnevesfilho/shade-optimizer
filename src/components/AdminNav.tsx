@@ -18,29 +18,6 @@ function AdminNav() {
     const borderColor = getThemeClasses("border-neutral-300", "border-neutral-700");
     const hoverColor = getThemeClasses("hover:border-neutral-400", "hover:border-neutral-500");
 
-    const pages: {title: string, link: string}[] = [
-        {
-            title: "Home",
-            link: ''
-        },
-        {
-            title: "Bottom Rails",
-            link: ''
-        },
-        {
-            title: "Fabrics",
-            link: ''
-        },
-        {
-            title: "Tubes",
-            link: ''
-        },
-        {
-            title: "Systems",
-            link: ''
-        }
-    ]
-
     return (
         <div>
             <HamburgerBtn
@@ -63,18 +40,26 @@ function AdminNav() {
                 mt-16
                 flex flex-col gap-5 p-5
                 `}>
-                    {
-                        pages.map((page, index) => (
-                            <DefaultButton
-                                key={index}
-                            >
-                                {page.title}
-                            </DefaultButton>
-                        ))
-                    }
+                    <DefaultButton
+                        onClick={()=>{
+                            window.location.href = `/`
+                            setShowMenu(false);
+                        }}
+                    >
+                        Home
+                    </DefaultButton>
+                    <DefaultButton
+                        onClick={()=>{
+                            window.location.href = `/admin`
+                            setShowMenu(false);
+                        }}
+                    >
+                        Settings
+                    </DefaultButton>
                     <DefaultButton
                         onClick={() => {
                             logout();
+                            window.location.href = "/";
                             setShowMenu(false);
                         }}
                     >
