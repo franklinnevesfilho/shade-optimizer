@@ -6,9 +6,10 @@ interface MeasurementInputProps {
     label?: string;
     setMeasurement: (measurement: Measurement) => void;
     measurement: Measurement;
+    type?: 'length' | 'weight';
 }
 
-function MeasurementInput({label, setMeasurement, measurement}: MeasurementInputProps) {
+function MeasurementInput({label, setMeasurement, measurement, type='length'}: MeasurementInputProps) {
 
     const {theme} = useTheme();
 
@@ -37,7 +38,7 @@ function MeasurementInput({label, setMeasurement, measurement}: MeasurementInput
                 min={0}
             />
             <Dropdown
-                options={['cm', 'in', 'ft', 'm']}
+                options={type == 'length' ? ['cm', 'in', 'ft', 'm'] : ['kg/m', 'lb/ft']}
                 selected={measurement.unit}
                 setSelected={(unit) => setMeasurement({...measurement, unit})}
             />

@@ -1,37 +1,37 @@
-import {Measurement} from "./Measurement.ts";
+import { Measurement } from "./Measurement.ts";
 
+// Base collection item type
 export type CollectionItem = {
     id: string;
     description: string;
+};
+
+// Base collection interface
+export interface ItemCollection {
+    id?: string;
+    name: string;
+    items: CollectionItem[];
 }
 
-
-export type FabricCollection = {
-    name: string;
+// Specific collection types extending the base `ItemCollection`
+export type FabricCollection = ItemCollection & {
     isNeolux?: boolean;
     placement: "inside" | "outside";
     thickness: Measurement;
     weight: Measurement;
-    items?: CollectionItem[];
-}
+};
 
-export type TubeCollection = {
-    name: string;
+export type TubeCollection = ItemCollection & {
     modulus: Measurement;
     density: Measurement;
     inner_diameter: Measurement;
     outside_diameter: Measurement;
-    items?: CollectionItem[];
-}
+};
 
-export type BottomRailCollection = {
-    name: string;
+export type BottomRailCollection = ItemCollection & {
     weight: Measurement;
-    items?: CollectionItem[];
-}
+};
 
-export type SystemCollection = {
-    name: string;
+export type SystemCollection = ItemCollection & {
     maxDiameter: Measurement;
-    items: CollectionItem[];
-}
+};

@@ -1,7 +1,9 @@
 import {useEffect, useState} from 'react';
 import {useAuth} from "../hooks";
 import Tabs from "../components/basic/Tabs.tsx";
-import EditCollection from "../components/EditCollection.tsx";
+import ItemInventory from "../components/admin/ItemInventory.tsx";
+import EditItem from "../components/admin/EditItem.tsx";
+import EditBottomRail from "../components/admin/EditBottomRail.tsx";
 
 function AdminPage() {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -20,30 +22,34 @@ function AdminPage() {
     const collections = [
         {
             name: 'Bottom Rails',
-            component: <EditCollection
+            component: <ItemInventory
                 collectionName={'BottomRailCollection'}
                 type={'bottomRail'}
+                EditComponent={EditBottomRail}
             />
         },
         {
             name: 'Fabrics',
-            component: <EditCollection
+            component: <ItemInventory
                 collectionName={'FabricCollection'}
                 type={'fabric'}
+                EditComponent={EditItem}
             />
         },
         {
             name:"Systems",
-            component: <EditCollection
+            component: <ItemInventory
                 collectionName={'SystemCollection'}
                 type={'system'}
+                EditComponent={EditItem}
             />
         },
         {
             name:"Tubes",
-            component: <EditCollection
+            component: <ItemInventory
                 collectionName={'TubeCollection'}
                 type={'tube'}
+                EditComponent={EditItem}
             />
         }
     ]
