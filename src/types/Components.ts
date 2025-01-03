@@ -10,7 +10,7 @@ export type CollectionItem = {
 export interface ItemCollection {
     id?: string;
     name: string;
-    items: CollectionItem[];
+    items?: CollectionItem[];
 }
 
 // Specific collection types extending the base `ItemCollection`
