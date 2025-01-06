@@ -16,6 +16,7 @@ export interface ItemCollection {
 // Specific collection types extending the base `ItemCollection`
 export type FabricCollection = ItemCollection & {
     isNeolux?: boolean;
+    maxWidth?:Measurement;
     placement: "inside" | "outside";
     thickness: Measurement;
     weight: Measurement;
