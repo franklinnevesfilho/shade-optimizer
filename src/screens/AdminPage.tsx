@@ -3,7 +3,6 @@ import {useAuth} from "../hooks";
 import Tabs from "../components/basic/Tabs.tsx";
 import ItemInventory from "../components/admin/ItemInventory.tsx";
 import EditItem from "../components/admin/EditItem.tsx";
-import EditBottomRail from "../components/admin/EditBottomRail.tsx";
 
 function AdminPage() {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -24,15 +23,15 @@ function AdminPage() {
             name: 'Bottom Rails',
             component: <ItemInventory
                 collectionName={'BottomRailCollection'}
-                type={'bottomRail'}
-                EditComponent={EditBottomRail}
+                type={'BottomRail'}
+                EditComponent={EditItem}
             />
         },
         {
             name: 'Fabrics',
             component: <ItemInventory
                 collectionName={'FabricCollection'}
-                type={'fabric'}
+                type={'Fabric'}
                 EditComponent={EditItem}
             />
         },
@@ -40,7 +39,7 @@ function AdminPage() {
             name:"Systems",
             component: <ItemInventory
                 collectionName={'SystemCollection'}
-                type={'system'}
+                type={'System'}
                 EditComponent={EditItem}
             />
         },
@@ -48,7 +47,7 @@ function AdminPage() {
             name:"Tubes",
             component: <ItemInventory
                 collectionName={'TubeCollection'}
-                type={'tube'}
+                type={'Tube'}
                 EditComponent={EditItem}
             />
         }
