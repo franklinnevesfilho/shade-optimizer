@@ -6,8 +6,9 @@ interface ThemedInputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     type?: string;
     placeholder?: string;
+    style?: string;
 }
-function ThemedInput({value, onChange, type, placeholder}: ThemedInputProps) {
+function ThemedInput({value, onChange, type, placeholder, style}: ThemedInputProps) {
 
     const {theme} = useTheme();
 
@@ -26,7 +27,11 @@ function ThemedInput({value, onChange, type, placeholder}: ThemedInputProps) {
                 border-neutral-400 text-neutral-600
                 focus:ring-neutral-400
                 `)
-            }`}
+            }
+            ${style}
+            `
+
+        }
             type={type}
             placeholder={placeholder}
             onChange={onChange}

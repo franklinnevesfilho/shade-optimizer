@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {useAuth} from "../hooks";
 import Tabs from "../components/basic/Tabs.tsx";
 import ItemInventory from "../components/admin/ItemInventory.tsx";
-import EditItem from "../components/admin/EditItem.tsx";
 
 function AdminPage() {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -15,7 +14,7 @@ function AdminPage() {
         }else{
             console.log('Admin Page')
         }
-    }, [])
+    }, [authUser])
 
 
     const collections = [
@@ -24,7 +23,6 @@ function AdminPage() {
             component: <ItemInventory
                 collectionName={'BottomRailCollection'}
                 type={'BottomRail'}
-                EditComponent={EditItem}
             />
         },
         {
@@ -32,7 +30,6 @@ function AdminPage() {
             component: <ItemInventory
                 collectionName={'FabricCollection'}
                 type={'Fabric'}
-                EditComponent={EditItem}
             />
         },
         {
@@ -40,7 +37,6 @@ function AdminPage() {
             component: <ItemInventory
                 collectionName={'SystemCollection'}
                 type={'System'}
-                EditComponent={EditItem}
             />
         },
         {
@@ -48,7 +44,6 @@ function AdminPage() {
             component: <ItemInventory
                 collectionName={'TubeCollection'}
                 type={'Tube'}
-                EditComponent={EditItem}
             />
         }
     ]

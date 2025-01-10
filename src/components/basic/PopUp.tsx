@@ -3,7 +3,7 @@ import Title from './Title.tsx';
 import {useTheme} from "../../hooks";
 
 export interface PopUpProps {
-    children: ReactNode;
+    children?: ReactNode;
     title?: string;
     style?: string;
     onClose: (state: boolean) => void;
