@@ -16,6 +16,8 @@ function Systems({shadeOptions, ...props}: SystemsProps) {
     const [selectedSystem, setSelectedSystem] = useState<SystemOptions | undefined>(undefined)
 
     useEffect(() => {
+
+
         const getOptions = async () => {
             const systemOptions:SystemCollection[] = [];
             const tubes: TubeCollection[] = [];

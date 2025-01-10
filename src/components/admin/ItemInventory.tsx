@@ -58,7 +58,6 @@ function ItemInventory({ collectionName, type}: AdminPageProps) {
     const onDelete = async (id: string, collectionName: string) => {
         await deleteDoc(doc(firebaseDB, collectionName, id));
         setRefreshKey((prevKey) => prevKey + 1); // Update refreshKey to force re-render
-        console.log("Deleted item with ID:", id);
     }
 
     const addItem = (selected?: ItemCollection) => {

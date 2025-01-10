@@ -87,6 +87,7 @@ function getFabricWeight(fabric: FabricCollection, width: Measurement, drop: Mea
 }
 
 function getBottomRailWeight(bottomRail: BottomRailCollection, length: Measurement, unit: string = 'kg'){
+
     const weightUnit = unit + '/m';
     const weight = convert(bottomRail.weight, weightUnit);
     length = convert(length, 'm');
@@ -119,6 +120,7 @@ function getTubeDeflection(fabric:FabricCollection, bottomRail: BottomRailCollec
 
     const W = getTotalLoad(fabric, bottomRail, width, drop)
     const I = getMomentOfInertia(tube)
+
 
     const deflection = (5 * W.value * Math.pow(L.value, 3)) / (384 * E.value * I.value)
 
@@ -182,7 +184,6 @@ function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCo
                 const rollUpDiameter = getRollUpDiameter(shadeOptions.drop, tube.outside_diameter, shadeOptions.fabric)
                 if(rollUpDiameter.value <= system.maxDiameter.value){
                     const deflection = getTubeDeflection(shadeOptions.fabric, shadeOptions.bottomRail, tube, shadeOptions.width, shadeOptions.drop)
-
                     if(deflection.value <= 2.99){
                         const completeSystem : SystemOptions | undefined
                             = results.find((result) => result.system.name === system.name) || undefined
@@ -217,6 +218,7 @@ function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCo
                 return aNum - bNum
             })
         })
+
 
         return results
     }

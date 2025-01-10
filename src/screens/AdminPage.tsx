@@ -10,9 +10,6 @@ function AdminPage() {
     useEffect(()=>{
         if(!authUser){
             window.location.href = '/'
-            console.log('Redirecting to Home Page')
-        }else{
-            console.log('Admin Page')
         }
     }, [authUser])
 

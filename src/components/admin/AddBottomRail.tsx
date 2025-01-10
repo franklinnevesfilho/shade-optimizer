@@ -11,7 +11,7 @@ function AddBottomRail({onSave, item}: AddItemProps) {
         name: "",
         weight:{
             value: 0,
-            unit: "kg"
+            unit: "kg/m"
         }
     });
 
@@ -47,7 +47,9 @@ function AddBottomRail({onSave, item}: AddItemProps) {
             <MeasurementInput
                 label="Weight*"
                 measurement={bottomRail.weight}
-                setMeasurement={(measurement) => setBottomRail((prev) => ({...prev, weight: measurement}))}
+                setMeasurement={(measurement) => {
+                    setBottomRail((prev) => ({...prev, weight: measurement}))
+                }}
                 type="weight"
             />
             <DefaultButton
