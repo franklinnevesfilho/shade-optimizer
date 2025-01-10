@@ -2,10 +2,9 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const apikey = import.meta.env.VITE_API_KEY;
 
 const firebaseConfig = {
-    apiKey: apikey,
+    apiKey: "AIzaSyBe5RYGB2eqk_IXp86SZP3jtuYqn_DkzWM",
     authDomain: "shade-optimizer-95d28.firebaseapp.com",
     databaseURL: "https://shade-optimizer-95d28-default-rtdb.firebaseio.com",
     projectId: "shade-optimizer-95d28",
