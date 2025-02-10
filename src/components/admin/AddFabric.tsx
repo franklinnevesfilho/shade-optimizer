@@ -93,6 +93,15 @@ function AddFabric({onSave, item}: AddItemProps) {
                 }))}
                 type="length"
             />
+            <MeasurementInput
+                label="Weight*"
+                measurement={fabric.weight}
+                setMeasurement={(measurement) => setFabric((prev) => ({
+                    ...prev, weight:
+                    measurement
+                }))}
+                type="weight"
+            />
 
             <DefaultButton
                 darkStyle={`bg-green-800 text-neutral-100 border-green-800 hover:bg-green-600 hover:text-white hover:border-green-600`}
