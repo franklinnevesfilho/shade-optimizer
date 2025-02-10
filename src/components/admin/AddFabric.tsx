@@ -100,7 +100,7 @@ function AddFabric({onSave, item}: AddItemProps) {
                     ...prev, weight:
                     measurement
                 }))}
-                type="weight"
+                type="fabric"
             />
 
             <DefaultButton

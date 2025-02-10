@@ -6,7 +6,7 @@ interface MeasurementInputProps {
     label?: string;
     setMeasurement: (measurement: Measurement) => void;
     measurement: Measurement;
-    type?: "length" | "weight" | "density" | "modulus";
+    type?: "length" | "weight" | "fabric" | "density" | "modulus";
 }
 
 function MeasurementInput({ label, setMeasurement, measurement, type = "length" }: MeasurementInputProps) {
@@ -15,6 +15,7 @@ function MeasurementInput({ label, setMeasurement, measurement, type = "length" 
     const unitOptions = {
         length: ["mm", "cm", "in", "ft", "m"],
         weight: ["kg/m", "lb/ft"],
+        fabric: ["g/m2", "oz/ft2"],
         density: ["g/cc", "lb/cu.ft"],
         modulus: ["GPa", "psi"],
     };
