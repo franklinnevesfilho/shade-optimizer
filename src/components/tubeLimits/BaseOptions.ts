@@ -5,7 +5,7 @@ export const BottomRailOptions: BottomRailCollection[] = [
         name: "Light",
         weight: {
             value: 0.3,
-            unit: "g/m"
+            unit: "kg/m"
         }
     },
     {

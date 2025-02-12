@@ -77,19 +77,25 @@ function TubeLimits() {
                     <div className="flex flex-col md:flex-row w-full items-center justify-between">
                         <SelectOption
                             label="Fabric:"
-                            options={FabricOptions.map(fabric => fabric.name)}
-                            selectedOption={selectedFabric?.name}
+                            options={FabricOptions.map(fabric => fabric.name+' '+fabric.thickness.value+fabric.thickness.unit)}
+                            selectedOption={selectedFabric?.name+' '+selectedFabric?.thickness.value+selectedFabric?.thickness.unit}
                             setOptions={(value) => {
-                                setSelectedFabric(FabricOptions.find(fabric => fabric.name === value))
+                                setSelectedFabric(FabricOptions.find(
+                                    fabric =>
+                                        fabric.name+' '+fabric.thickness.value+fabric.thickness.unit === value
+                                ))
                             }}
                             placeholder={"Select Fabric"}
                         />
                         <SelectOption
                             label="Bottom Rail:"
-                            options={BottomRailOptions.map(bottomRail => bottomRail.name)}
-                            selectedOption={selectedBottomRail?.name}
+                            options={BottomRailOptions.map(bottomRail => bottomRail.name+' '+bottomRail.weight.value+bottomRail.weight.unit)}
+                            selectedOption={selectedBottomRail?.name+' '+selectedBottomRail?.weight.value+selectedBottomRail?.weight.unit}
                             setOptions={(value) => {
-                                setSelectedBottomRail(BottomRailOptions.find(bottomRail => bottomRail.name === value))
+                                setSelectedBottomRail(BottomRailOptions.find(
+                                    bottomRail =>
+                                        bottomRail.name+' '+bottomRail.weight.value+bottomRail.weight.unit === value
+                                ))
                             }}
                             placeholder={"Select Bottom Rail"}
                         />
