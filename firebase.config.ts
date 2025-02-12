@@ -4,14 +4,15 @@ import { getFirestore } from "firebase/firestore";
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBe5RYGB2eqk_IXp86SZP3jtuYqn_DkzWM",
-    authDomain: "shade-optimizer-95d28.firebaseapp.com",
-    databaseURL: "https://shade-optimizer-95d28-default-rtdb.firebaseio.com",
-    projectId: "shade-optimizer-95d28",
-    storageBucket: "shade-optimizer-95d28.firebasestorage.app",
-    messagingSenderId: "203860221071",
-    appId: "1:203860221071:web:5d7fdfd3b5d50bc617a4fa"
+    apiKey: import.meta.env.VITE_APP_API_KEY,
+    authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+    databaseURL: import.meta.env.VITE_APP_DATABASE_URL,
+    projectId: import.meta.env.VITE_APP_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_APP_MESSAGE_SENDER_ID,
+    appId: import.meta.env.VITE_APP_APP_ID
 };
+
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
