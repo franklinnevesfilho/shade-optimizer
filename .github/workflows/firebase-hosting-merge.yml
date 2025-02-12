@@ -6,6 +6,7 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    environment: DEV
     env: # Move env block here
       VITE_APP_API_KEY: ${{ secrets.VITE_APP_API_KEY }}
       VITE_APP_AUTH_DOMAIN: ${{ secrets.VITE_APP_AUTH_DOMAIN }}
