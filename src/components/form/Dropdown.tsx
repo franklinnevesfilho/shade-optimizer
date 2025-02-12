@@ -1,13 +1,15 @@
 import {useTheme} from "../../hooks";
 
 interface DropdownProps {
+    style?: string;
+    innerStyle?: string;
     options: string[];
     selected?: string;
     setSelected: (value: string) => void;
     placeholder?: string;
 }
 
-function Dropdown({ options, selected, setSelected, placeholder }: DropdownProps) {
+function Dropdown({ style, innerStyle, options, selected, setSelected, placeholder }: DropdownProps) {
 
     const {theme} = useTheme()
 
@@ -19,11 +21,12 @@ function Dropdown({ options, selected, setSelected, placeholder }: DropdownProps
     );
 
     return (
-        <div className="relative">
+        <div className={`relative ${style}`}>
             <select
                 className={`
+                    ${innerStyle}
                     ${theme === 'dark' ? 'bg-neutral-800 text-neutral-200' : 'bg-neutral-50 text-neutral-800'}
-                    w-full px-4 py-2 text-left border 
+                    w-full px-4 py-2 text-left border
                     border-neutral-300 rounded-md shadow-sm 
                     focus:outline-none focus:ring-2 focus:ring-neutral-700
                     flex items-center justify-between

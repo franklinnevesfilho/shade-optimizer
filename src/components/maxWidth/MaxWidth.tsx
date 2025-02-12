@@ -22,6 +22,8 @@ function MaxWidth() {
     const [bottomRails, setBottomRails] = useState<BottomRailCollection[]>([]);
     const [tubes, setTubes] = useState<TubeCollection[]>([]);
     const [systems, setSystems] = useState<SystemCollection[]>([]);
+    const [widthUnit, setWidthUnit] = useState<string>("mm");
+    const [rollUpUnit, setRollUpUnit] = useState<string>("mm");
 
     const [shadeInfo, setShadeInfo] = useState<ShadeInfo>({
         drop: { value: 0, unit: "" },  // Default drop measurement
@@ -91,7 +93,7 @@ function MaxWidth() {
             setSystems(systemOptions);
         };
 
-        getOptions();
+        getOptions().then();
     }, []);
 
     return (
@@ -138,40 +140,74 @@ function MaxWidth() {
                 }}
             />
             </div>
-            <div className="flex gap-2 w-full items-center justify-between">
-                System
-            <Dropdown
-                options={systems.map((system) => system.name)}
-                selected={shadeInfo.system ? shadeInfo.system.name : ""}
-                setSelected={(value) => {
-                    const system = systems.find((s) => s.name === value);
-                    setShadeInfo({ ...shadeInfo, system });
-                }}
-            />
+            <div className={`
+                flex flex-row gap-2 w-full justify-center items-center
+            `}>
+                <DefaultButton
+                    style={`w-3/4`}
+                    onClick={()=> {
+                        calculateRollUpDiameter()
+                        calculateMaxWidth()
+                    }}
+                >
+                    Calculate Max Width
+                </DefaultButton>
             </div>
-            <DefaultButton
-                onClick={()=> {
-                    calculateRollUpDiameter()
-                    calculateMaxWidth()
-                }}
-            >
-                Calculate Max Width
-            </DefaultButton>
-            <div>
-                <div>
+            <div className={`
+                flex flex-col gap-2 p-2 w-full justify-center items-center
+            `}>
+                <div className={`
+                    flex flex-row w-full justify-between items-center gap-2
+                `}>
+                    <span>Max Width:</span>
                     {
-                        maxWidth.value > 0 ?
-                            `Max Width: ${round(convert(maxWidth, shadeInfo.drop.unit).value)} ${shadeInfo.drop.unit}`
-                            : "Please select all options to calculate max width"
+                        maxWidth.value > 0 && (
+                            <div className={`flex flex-row justify-center items-center gap-2`}>
+                                <div>{round(convert(maxWidth, widthUnit).value)}</div>
+                                <Dropdown
+                                    style="w-1/2"
+                                    innerStyle="px-0 py-1"
+                                    options={["mm", "cm", "in", "m", "ft"]}
+                                    selected={widthUnit}
+                                    setSelected={(value) => setWidthUnit(value)}
+                                    placeholder={"Select Unit"}
+                                />
+                            </div>
+                        )
                     }
                 </div>
-                <div>
+                <div className={`
+                    flex flex-row w-full justify-between items-center gap-2
+                `}>
+                    <span>Roll Up Diameter:</span>
                     {
-                        rollUpDiameter.value > 0 ?
-                            `Roll Up Diameter: ${round(convert(rollUpDiameter, shadeInfo.drop.unit).value)} ${shadeInfo.drop.unit}`
-                            : "Please select all options to calculate roll up diameter"
+                        rollUpDiameter.value > 0 && (
+                            <div className={`flex flex-row justify-center items-center gap-2`}>
+                                <div>{round(convert(rollUpDiameter, rollUpUnit).value)}</div>
+                                <Dropdown
+                                    style="w-1/2"
+                                    innerStyle="px-0 py-1"
+                                    options={["mm", "cm", "in", "m", "ft"]}
+                                    selected={rollUpUnit}
+                                    setSelected={(value) => setRollUpUnit(value)}
+                                    placeholder={"Select Unit"}
+                                />
+                            </div>
+                        )
                     }
                 </div>
+            </div>
+            <div className=" flex flex-col gap-2 w-full p-3 items-center justify-between">
+                <Dropdown
+                    style="w-full"
+                    options={systems.filter((system) => system.maxDiameter.value >= rollUpDiameter.value).map((system) => system.name)}
+                    selected={shadeInfo.system ? shadeInfo.system.name : ""}
+                    setSelected={(value) => {
+                        const system = systems.find((s) => s.name === value);
+                        setShadeInfo({ ...shadeInfo, system });
+                    }}
+                    placeholder={"Available Systems"}
+                />
             </div>
         </QuestionTemplate>
     );
