@@ -11,7 +11,7 @@ function App() {
   return (
       <Router>
           <AuthProvider>
-              <div className={`justify-center items-center w-screen h-screen`}>
+              <div className={`justify-center items-center flex flex-col w-screen h-screen`}>
                   <div className={'w-full'}>
                       <Header/>
                   </div>

@@ -33,8 +33,8 @@ function MaxWidth() {
         system: undefined,
     });
 
-    const [maxWidth, setMaxWidth] = useState<Measurement>({ value: 0, unit: "cm" });
-    const [rollUpDiameter, setRollUpDiameter] = useState<Measurement>({ value: 0, unit: "cm" });
+    const [maxWidth, setMaxWidth] = useState<Measurement>({ value: 0, unit: "in" });
+    const [rollUpDiameter, setRollUpDiameter] = useState<Measurement>({ value: 0, unit: "mm" });
 
     const calculateMaxWidth= () => {
         if (shadeInfo.fabric && shadeInfo.bottomRail && shadeInfo.tube) {
@@ -197,18 +197,22 @@ function MaxWidth() {
                     }
                 </div>
             </div>
-            <div className=" flex flex-col gap-2 w-full p-3 items-center justify-between">
-                <Dropdown
-                    style="w-full"
-                    options={systems.filter((system) => system.maxDiameter.value >= rollUpDiameter.value).map((system) => system.name)}
-                    selected={shadeInfo.system ? shadeInfo.system.name : ""}
-                    setSelected={(value) => {
-                        const system = systems.find((s) => s.name === value);
-                        setShadeInfo({ ...shadeInfo, system });
-                    }}
-                    placeholder={"Available Systems"}
-                />
-            </div>
+            {
+                maxWidth.value > 0 && rollUpDiameter.value > 0 && (
+                    <div className=" flex flex-col gap-2 w-full p-3 items-center justify-between">
+                        <Dropdown
+                            style="w-full"
+                            options={systems.filter((system) => system.maxDiameter.value >= rollUpDiameter.value).map((system) => system.name)}
+                            selected={shadeInfo.system ? shadeInfo.system.name : ""}
+                            setSelected={(value) => {
+                                const system = systems.find((s) => s.name === value);
+                                setShadeInfo({ ...shadeInfo, system });
+                            }}
+                            placeholder={"Available Systems"}
+                        />
+                    </div>
+                )
+            }
         </QuestionTemplate>
     );
 }
