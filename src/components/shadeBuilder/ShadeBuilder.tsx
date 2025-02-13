@@ -1,9 +1,8 @@
 import {Title} from "../index.ts";
 import {ShadeOptions} from "../../types";
 import {useState} from "react";
-import Specifics from "./Specifics.tsx";
-import Style from "./Style.tsx";
 import Systems from "./Systems.tsx";
+import ShadeDetails from "./ShadeDetails.tsx";
 
 
 function ShadeBuilder() {
@@ -35,34 +34,25 @@ function ShadeBuilder() {
     }
 
     const questions = [
-        <Specifics
+        <ShadeDetails
             specifics={
                 {
                     shadePlacement: shadeOptions.shadePlacement,
                     width: shadeOptions.width,
-                    drop: shadeOptions.drop
+                    drop: shadeOptions.drop,
+                    fabric: shadeOptions.fabric,
+                    bottomRail: shadeOptions.bottomRail
                 }
             }
             setSpecifics={(value) => setShadeOptions({
                 ...shadeOptions,
                 shadePlacement: value.shadePlacement,
                 width: value.width,
-                drop: value.drop
-            })}
-            onNext={handleNext}
-        />,
-        <Style
-            styleOptions={{
-                fabric: shadeOptions.fabric,
-                bottomRail: shadeOptions.bottomRail
-            }}
-            setStyleOptions={(value) => setShadeOptions({
-                ...shadeOptions,
+                drop: value.drop,
                 fabric: value.fabric,
                 bottomRail: value.bottomRail
             })}
             onNext={handleNext}
-            onPrev={handlePrev}
         />,
         <Systems
             shadeOptions={shadeOptions}

@@ -9,12 +9,12 @@ export interface QuestionsProps{
 
 interface QuestionTemplateProps {
     title: string,
-    answered?: boolean
+    answered?: () => boolean
     children?: React.ReactNode
     style?: string
     onNext?: () => void
     onPrev?: () => void
-    errorMsg?: string
+    errorMsg?: () => string
 }
 function QuestionTemplate(
     {
@@ -23,8 +23,8 @@ function QuestionTemplate(
         style,
         onPrev,
         onNext,
-        answered = false,
-        errorMsg = 'Please answer the question before proceeding'
+        answered = ()=> false,
+        errorMsg = ()=> 'Please answer the question before proceeding'
     }: QuestionTemplateProps) {
     const [error, setError] = React.useState(false)
     const {theme} = useTheme()
@@ -58,7 +58,7 @@ function QuestionTemplate(
     const handleNext = () => {
         if(onNext){
 
-            if(answered){
+            if(answered()){
                 onNext()
             }else{
                 setError(true)
@@ -76,7 +76,7 @@ function QuestionTemplate(
                 onClose={setError}
             >
                 <div className={`text-lg`}>
-                    {errorMsg}
+                    {errorMsg()}
                 </div>
             </PopUp>
         }
