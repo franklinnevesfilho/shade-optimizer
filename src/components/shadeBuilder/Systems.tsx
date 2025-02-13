@@ -1,23 +1,31 @@
 import {useState, useEffect} from "react";
-import {ShadeOption} from "./ShadeOptions.tsx";
 import QuestionTemplate, {QuestionsProps} from "./QuestionTemplate.tsx";
 import {collection, getDocs} from "firebase/firestore";
 import {firebaseDB} from "../../../firebase.config.ts";
-import {Measurement, ShadeOptions, SystemCollection, SystemOptions, TubeCollection} from "../../types";
+import {
+    BottomRailCollection,
+    FabricCollection,
+    ShadeOptions,
+    SystemCollection,
+    SystemOptions,
+    TubeCollection
+} from "../../types";
 import {getSystems} from "../../utils/ShadeOptimizer.ts";
+import MeasurementInput from "../form/MeasurementInput.tsx";
+import SearchDropdown from "../form/SearchDropdown.tsx";
 
 interface SystemsProps  extends QuestionsProps{
     shadeOptions: ShadeOptions,
-    setShadeOptions?: (value: ShadeOptions) => void
+    setShadeOptions: (value: ShadeOptions) => void
+    fabricOptions: FabricCollection[],
+    bottomRailOptions: BottomRailCollection[],
 }
 
-function Systems({shadeOptions, ...props}: SystemsProps) {
+function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOptions, ...props}: SystemsProps) {
     const [systemOptions, setSystemOptions] = useState<SystemOptions[]>([]);
-    const [selectedSystem, setSelectedSystem] = useState<SystemOptions | undefined>(undefined)
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
     useEffect(() => {
-
-
         const getOptions = async () => {
             const systemOptions:SystemCollection[] = [];
             const tubes: TubeCollection[] = [];
@@ -43,48 +51,65 @@ function Systems({shadeOptions, ...props}: SystemsProps) {
 
     },[shadeOptions])
 
-
-    const answered = selectedSystem !== undefined
-
-    const TubeCard = ({tube, deflection}:{tube:TubeCollection, deflection:Measurement}) => {
+    const ShadeOptions = () => {
         return (
-            <div className={`flex flex-col border p-2 rounded-lg`}>
-                <div>Tube: <span className={`font-bold`}>{tube.name}</span></div>
-                <div>Deflection: {deflection.value.toPrecision(2)} {deflection.unit}</div>
+            <div className={`
+            flex flex-row
+            w-3/4
+            justify-between items-center
+            `}>
+                <div>
+                    <MeasurementInput
+                        label={'Width'}
+                        measurement={shadeOptions.width}
+                        setMeasurement={ (value) =>
+                            setShadeOptions({...shadeOptions, width: value})}
+                    />
+                    <MeasurementInput
+                        label={'Drop'}
+                        measurement={shadeOptions.drop}
+                        setMeasurement={ (value) =>
+                            setShadeOptions({...shadeOptions, drop: value})}
+                    />
+                </div>
+                <div>
+                    <SearchDropdown
+                        label={"Fabric"}
+                        selected={shadeOptions.fabric && shadeOptions.fabric.name}
+                        setSelected={(value) => {
+                            const fabric = fabricOptions.find((f) => f.name === value)
+                            setShadeOptions({...shadeOptions, fabric})
+                        }}
+                        options={fabricOptions.map((fabric) => fabric.name)}
+                    />
+                    <SearchDropdown
+                        label={"Bottom Rail"}
+                        selected={shadeOptions.bottomRail && shadeOptions.bottomRail.name}
+                        setSelected={(value) => {
+                            const bottomRail = bottomRailOptions.find((br) => br.name === value)
+                            setShadeOptions({...shadeOptions, bottomRail})
+                        }}
+                        options={bottomRailOptions.map((br) => br.name)}
+                    />
+                </div>
             </div>
         )
     }
+
 
     return (
         <QuestionTemplate
             title={'Available Systems'}
             style={`
             w-full h-full
+            flex flex-col items-center justify-center
+            bg-red-500
             `}
-            answered={answered}
             {...props}
         >
-            <ShadeOption
-                options={systemOptions.map((system) => system.system.name)}
-                selected={selectedSystem?.system.name || ''}
-                setSelected={(system) => {
-                    setSelectedSystem(systemOptions.find((option) => option.system.name === system))
-                }}
-            />
-            <div className="flex flex-col gap-5 justify-start items-center border-t-2 p-2 w-full h-full ">
-                <div className={` flex flex-col gap-2 w-[80%]
-                p-2 pb-0 border-b italic text-lg font-bold justify-center items-center 
-                `}>Tubes: </div>
+            <ShadeOptions/>
+            <div>
 
-                <div className={`flex flex-row flex-wrap gap-2 w-full justify-center items-center `}>
-                    {
-                        selectedSystem?.options.map((option, index) => {
-                            return (
-                                <TubeCard key={index} tube={option.tube} deflection={option.deflection}/>
-                            )
-                        })
-                    }
-                </div>
             </div>
         </QuestionTemplate>
     );

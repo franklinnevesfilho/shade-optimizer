@@ -2,10 +2,7 @@ import MeasurementInput from "../form/MeasurementInput.tsx";
 
 import QuestionTemplate, {QuestionsProps} from "./QuestionTemplate.tsx";
 import {BottomRailCollection, FabricCollection, Measurement} from "../../types";
-import {useEffect, useState} from "react";
 import SearchDropdown from "../form/SearchDropdown.tsx";
-import {collection, getDocs} from "firebase/firestore";
-import {firebaseDB} from "../../../firebase.config.ts";
 
 interface SpecificsProps extends QuestionsProps{
     specifics:{
@@ -23,13 +20,11 @@ interface SpecificsProps extends QuestionsProps{
             fabric: FabricCollection | undefined,
             bottomRail: BottomRailCollection | undefined,
         }) => void,
+    fabricOptions: FabricCollection[],
+    bottomRailOptions: BottomRailCollection[],
 }
 
-function ShadeDetails({specifics, setSpecifics, onNext, ...props}: SpecificsProps) {
-    const [fabricOptions, setFabricOptions] = useState<FabricCollection[]>([]);
-    const [bottomRailOptions, setBottomRailOptions] = useState<BottomRailCollection[]>([]);
-
-
+function ShadeDetails({specifics, setSpecifics, onNext, fabricOptions, bottomRailOptions, ...props}: SpecificsProps) {
 
 
     const fullyAnswered = () => {
@@ -49,32 +44,6 @@ function ShadeDetails({specifics, setSpecifics, onNext, ...props}: SpecificsProp
             (drop.value !== 0 && drop.unit != '' ? '' : 'Please enter a drop') :
             (drop.value !== 0 && drop.unit != '' ? 'Please enter a width' : 'Please enter a width and drop');
     }
-
-    useEffect(() => {
-        const getOptions = async () => {
-            const fabricOptions:FabricCollection[] = [];
-            const bottomRailOptions:BottomRailCollection[] = [];
-
-            const fabricSnapshot = await getDocs(collection(firebaseDB, 'FabricCollection'));
-            fabricSnapshot.forEach((doc) => {
-                const fabric: FabricCollection = doc.data() as FabricCollection
-                fabricOptions.push(fabric)
-            });
-
-            const bottomRailSnapshot = await getDocs(collection(firebaseDB, 'BottomRailCollection'));
-            bottomRailSnapshot.forEach((doc) => {
-                const bottomRail: BottomRailCollection = doc.data() as BottomRailCollection
-                bottomRailOptions.push(bottomRail)
-
-            });
-
-            setFabricOptions(fabricOptions);
-            setBottomRailOptions(bottomRailOptions);
-        }
-
-        getOptions();
-
-    },[])
 
     return (
         <QuestionTemplate
