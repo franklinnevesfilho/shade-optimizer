@@ -4,15 +4,15 @@ import {collection, getDocs} from "firebase/firestore";
 import {firebaseDB} from "../../../firebase.config.ts";
 import {
     BottomRailCollection,
-    FabricCollection,
+    FabricCollection, Measurement,
     ShadeOptions,
     SystemCollection,
     SystemOptions,
     TubeCollection
 } from "../../types";
-import {getSystems} from "../../utils/ShadeOptimizer.ts";
-import MeasurementInput from "../form/MeasurementInput.tsx";
+import {getSystems, round} from "../../utils/ShadeOptimizer.ts";
 import SearchDropdown from "../form/SearchDropdown.tsx";
+import ThemedInput from "../form/ThemedInput.tsx";
 
 interface SystemsProps  extends QuestionsProps{
     shadeOptions: ShadeOptions,
@@ -25,54 +25,50 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
     const [systemOptions, setSystemOptions] = useState<SystemOptions[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
-    useEffect(() => {
-        const getOptions = async () => {
-            const systemOptions:SystemCollection[] = [];
-            const tubes: TubeCollection[] = [];
+    const filterOptions = (options: SystemOptions[]) => {
+        const search = searchTerm.toLowerCase().trim();
+        if(search === '') return options;
 
-            const systemSnapshot = await getDocs(collection(firebaseDB, 'SystemCollection'));
-            systemSnapshot.forEach((doc) => {
-                const system: SystemCollection = doc.data() as SystemCollection
-                systemOptions.push(system)
-            });
-
-            const tubeSnapshot = await getDocs(collection(firebaseDB, 'TubeCollection'));
-            tubeSnapshot.forEach((doc) => {
-                const tube: TubeCollection = doc.data() as TubeCollection
-                tubes.push(tube)
-            });
-
-            const systemConfig = getSystems(tubes, systemOptions, shadeOptions)
-
-            setSystemOptions(systemConfig);
+        // filter the options that include any word or both words in the search term
+        // create a set so no repeated options
+        const filteredOptions = new Set<SystemOptions>();
+        for( const option of options){
+            const terms = search.split(' ');
+            // if any term is included in the option name, add it to the filtered options
+            if(terms.some(term => term != '' && option.system.name.toLowerCase().includes(term.toLowerCase()))){
+                filteredOptions.add(option);
+            }
         }
 
-        getOptions();
-
-    },[shadeOptions])
+        return Array.from(filteredOptions);
+    }
 
     const ShadeOptions = () => {
+
+        const ShowMeasurement = ({label, measurement}: { label: string, measurement: Measurement }) =>{
+            return (
+                <div className={`w-full text-center`}>
+                    {label + ': '} <span className={'border-b'}>{measurement.value + ' ' + measurement.unit}</span>
+                </div>
+            )
+        }
+
         return (
             <div className={`
             flex flex-row
-            w-3/4
-            justify-between items-center
+            w-full gap-5
+            justify-center items-center
             `}>
-                <div>
-                    <MeasurementInput
-                        label={'Width'}
-                        measurement={shadeOptions.width}
-                        setMeasurement={ (value) =>
-                            setShadeOptions({...shadeOptions, width: value})}
-                    />
-                    <MeasurementInput
-                        label={'Drop'}
-                        measurement={shadeOptions.drop}
-                        setMeasurement={ (value) =>
-                            setShadeOptions({...shadeOptions, drop: value})}
-                    />
+                <div className={`
+                w-1/3 text-xl font-medium
+                flex flex-col lg:flex-row items-center justify-center gap-3 
+                `}>
+                    <ShowMeasurement label={'Width'} measurement={shadeOptions.width}/>
+                    <ShowMeasurement label={'Drop'} measurement={shadeOptions.drop}/>
                 </div>
-                <div>
+                <div className={`
+                flex flex-col lg:flex-row items-center justify-center gap-3 
+                `}>
                     <SearchDropdown
                         label={"Fabric"}
                         selected={shadeOptions.fabric && shadeOptions.fabric.name}
@@ -97,19 +93,97 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
     }
 
 
+    useEffect(() => {
+        const getOptions = async () => {
+            const systemOptions:SystemCollection[] = [];
+            const tubes: TubeCollection[] = [];
+
+            const systemSnapshot = await getDocs(collection(firebaseDB, 'SystemCollection'));
+            systemSnapshot.forEach((doc) => {
+                const system: SystemCollection = doc.data() as SystemCollection
+                systemOptions.push(system)
+            });
+
+            const tubeSnapshot = await getDocs(collection(firebaseDB, 'TubeCollection'));
+            tubeSnapshot.forEach((doc) => {
+                const tube: TubeCollection = doc.data() as TubeCollection
+                tubes.push(tube)
+            });
+
+            const systemConfig = getSystems(tubes, systemOptions, shadeOptions)
+
+            setSystemOptions(systemConfig);
+        }
+
+        getOptions();
+    },[ shadeOptions])
+
     return (
         <QuestionTemplate
-            title={'Available Systems'}
+            title={'System Details'}
             style={`
             w-full h-full
             flex flex-col items-center justify-center
-            bg-red-500
             `}
             {...props}
         >
-            <ShadeOptions/>
-            <div>
-
+            <div className={`
+            w-full 
+            flex flex-col items-center justify-center
+            mb-auto pb-2
+            `}>
+                <ShadeOptions/>
+                <div className={`
+                w-full mt-5
+                `}>
+                    <ThemedInput
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder={'Search for a system'}
+                    />
+                </div>
+            </div>
+            <div className={`
+            w-full h-full
+            `}>
+                <div
+                    className={`
+                    w-full border rounded-xl p-2
+                    flex flex-row flex-wrap items-center justify-center
+                    gap-3 overflow-x-hidden overflow-y-auto max-h-72
+                    `}
+                >
+                    {
+                        filterOptions(systemOptions).map((option, index) => (
+                            <div
+                                key={index}
+                                className={`
+                                flex flex-col items-center justify-start
+                                p-2 border rounded-md
+                                `}
+                            >
+                                <span className={`w-full font-medium border-b`}>{option.system.name}</span>
+                                <span className={` w-full text-start mt-1 border-b`}>Available Tubes:</span>
+                                <div className={`
+                                flex flex-col gap-1 max-w-48 max-h-32 overflow-y-auto overflow-x-hidden
+                                px-2 py-1
+                                `}>
+                                    {
+                                        option.options.map((option, index) => (
+                                            <div className={`
+                                            flex flex-col w-full text-start gap-1 items-start justify-center 
+                                            border-b p-0.5 italic
+                                            `}>
+                                                <div key={index}>{option.tube.name}</div>
+                                                <div>Deflection: {round(option.deflection.value) + ' ' +option.deflection.unit}</div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
             </div>
         </QuestionTemplate>
     );
