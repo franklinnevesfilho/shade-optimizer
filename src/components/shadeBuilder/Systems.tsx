@@ -43,7 +43,7 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
         return Array.from(filteredOptions);
     }
 
-    const ShadeOptions = () => {
+    const ShadeOption = () => {
 
         const ShowMeasurement = ({label, measurement}: { label: string, measurement: Measurement }) =>{
             return (
@@ -132,7 +132,7 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
             flex flex-col items-center justify-center
             mb-auto pb-2
             `}>
-                <ShadeOptions/>
+                <ShadeOption/>
                 <div className={`
                 w-full mt-5
                 `}>

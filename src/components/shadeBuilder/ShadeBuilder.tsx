@@ -10,35 +10,35 @@ import {firebaseDB} from "../../../firebase.config.ts";
 function ShadeBuilder() {
     const [fabricOptions, setFabricOptions] = useState<FabricCollection[]>([]);
     const [bottomRailOptions, setBottomRailOptions] = useState<BottomRailCollection[]>([]);
-    const [curPage, setCurPage] = useState(1)
+    const [curPage, setCurPage] = useState(0)
     const [shadeOptions, setShadeOptions] = useState<ShadeOptions>({
         shadePlacement: '',
         width: {
-            value: 60,
-            unit: 'in'
+            value: 0,
+            unit: ''
         },
         drop: {
-            value: 60,
-            unit: 'in'
+            value: 0,
+            unit: ''
         },
         fabric: {
             id: '',
             name: '',
             thickness: {
-                value: 0.65,
-                unit: 'mm'
+                value: 0,
+                unit: ''
             },
             weight: {
-                value: 500,
-                unit: 'g/m2'
+                value: 0,
+                unit: ''
             }
         } as FabricCollection,
         bottomRail: {
             id: '',
             name: '',
             weight: {
-                value: 0.3,
-                unit: 'kg/m'
+                value: 0,
+                unit: ''
             }
         },
     })
