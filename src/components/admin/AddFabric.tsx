@@ -23,7 +23,7 @@ function AddFabric({onSave, item}: AddItemProps) {
         },
         weight:{
             value: 0,
-            unit: "kg"
+            unit: "g/m2"
         }
     });
 
