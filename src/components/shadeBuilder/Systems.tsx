@@ -55,19 +55,18 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
 
         return (
             <div className={`
-            flex flex-row
-            w-full gap-5
+            flex flex-col md:flex-row w-full gap-5
             justify-center items-center
             `}>
                 <div className={`
-                w-1/3 text-xl font-medium
-                flex flex-col lg:flex-row items-center justify-center gap-3 
+                w-full md:w-1/3 text-xl font-medium
+                flex flex-col items-center justify-center gap-3 
                 `}>
                     <ShowMeasurement label={'Width'} measurement={shadeOptions.width}/>
                     <ShowMeasurement label={'Drop'} measurement={shadeOptions.drop}/>
                 </div>
-                <div className={`
-                flex flex-col lg:flex-row items-center justify-center gap-3 
+                <div className={` w-full md:w-1/3
+                flex flex-col items-center justify-center gap-3 
                 `}>
                     <SearchDropdown
                         label={"Fabric"}
@@ -111,6 +110,8 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
             });
 
             const systemConfig = getSystems(tubes, systemOptions, shadeOptions)
+
+            console.log("Systems: ",systemConfig)
 
             setSystemOptions(systemConfig);
         }
