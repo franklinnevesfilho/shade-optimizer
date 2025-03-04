@@ -114,11 +114,11 @@ function getTotalLoad(fabric:FabricCollection, bottomRail:BottomRailCollection, 
     }
 }
 
-function getTubeDeflection(fabric:FabricCollection, bottomRail: BottomRailCollection, tube:TubeCollection, width:Measurement, drop:Measurement, unit: string = 'mm'){
+function getTubeDeflection(tube:TubeCollection, width:Measurement, totalWeight: Measurement, unit: string = 'mm'){
     const L = convert(width, 'mm')
     const E = convert(tube.modulus, 'N/mm2')
 
-    const W = getTotalLoad(fabric, bottomRail, width, drop)
+    const W = totalWeight
     const I = getMomentOfInertia(tube)
 
 
@@ -179,18 +179,22 @@ function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCo
     if (shadeOptions.fabric === undefined || shadeOptions.bottomRail === undefined){
         return []
     }else{
-        for(const system of systemCollections){
-            for(const tube of tubeCollections){
-                const rollUpDiameter = getRollUpDiameter(shadeOptions.drop, tube.outside_diameter, shadeOptions.fabric)
-                if(rollUpDiameter.value <= system.maxDiameter.value){
-                    const deflection = getTubeDeflection(shadeOptions.fabric, shadeOptions.bottomRail, tube, shadeOptions.width, shadeOptions.drop)
-                    if(deflection.value <= 2.99){
+
+        for(const tube of tubeCollections){
+            const rollUpDiameter = getRollUpDiameter(shadeOptions.drop, tube.outside_diameter, shadeOptions.fabric)
+            const W = getTotalLoad(shadeOptions.fabric, shadeOptions.bottomRail, shadeOptions.width, shadeOptions.drop)
+            const deflection = getTubeDeflection(tube, shadeOptions.width, W)
+
+            if(deflection.value <= 2.99){
+                for(const system of systemCollections){
+                    if(rollUpDiameter.value <= system.maxDiameter.value){
                         const completeSystem : SystemOptions | undefined
                             = results.find((result) => result.system.name === system.name) || undefined
 
                         if(completeSystem === undefined){
                             results.push({
                                 system: system,
+                                weight: W,
                                 options: [{
                                     tube: tube,
                                     deflection: {
@@ -207,6 +211,8 @@ function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCo
                         }
                     }
                 }
+            }else{
+                console.log(`Deflection too high for ${tube.name}: ${deflection.value} ${deflection.unit}`)
             }
         }
 
