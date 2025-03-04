@@ -1,6 +1,6 @@
 import {BottomRailCollection, FabricCollection, TubeCollection} from "../../types";
 import {convert} from "../../utils/MeasurementConverter.ts";
-import {getTubeDeflection, round} from "../../utils/ShadeOptimizer.ts";
+import {getTotalLoad, getTubeDeflection, round} from "../../utils/ShadeOptimizer.ts";
 import {BottomRailOptions, FabricOptions} from "./BaseOptions.ts";
 import LineChart from "./LineChart.tsx";
 
@@ -25,13 +25,18 @@ export function TubeChart({tube, widthUnit, deflectionUnit, selectedFabric, sele
             {
                 label: `Deflection (${deflectionUnit})`,
                 data: lengths.map((length) => {
-                    return getTubeDeflection(
+                    const weight = getTotalLoad(
                         selectedFabric! || FabricOptions[0],
                         selectedBottomRail! || BottomRailOptions[0],
-                        tube,
                         {value: length, unit: 'm'}, // width
                         {value: 3, unit: 'm'}, // drop
-                        deflectionUnit).value
+                    )
+                    return getTubeDeflection(
+                        tube,
+                        {value: length, unit: 'm'}, // width
+                        weight,
+                        deflectionUnit
+                    ).value
                 }),
                 fill: false,
                 backgroundColor: 'rgb(0, 0, 255)',
