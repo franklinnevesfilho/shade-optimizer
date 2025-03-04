@@ -182,7 +182,7 @@ function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCo
 
         for(const tube of tubeCollections){
             const rollUpDiameter = getRollUpDiameter(shadeOptions.drop, tube.outside_diameter, shadeOptions.fabric)
-            const W = getTotalLoad(shadeOptions.fabric, shadeOptions.bottomRail, shadeOptions.width, shadeOptions.drop)
+            let W = getTotalLoad(shadeOptions.fabric, shadeOptions.bottomRail, shadeOptions.width, shadeOptions.drop)
             const deflection = getTubeDeflection(tube, shadeOptions.width, W)
 
             if(deflection.value <= 2.99){
@@ -192,9 +192,13 @@ function getSystems(tubeCollections:TubeCollection[], systemCollections:SystemCo
                             = results.find((result) => result.system.name === system.name) || undefined
 
                         if(completeSystem === undefined){
+                            W = convert(W, 'lb')
                             results.push({
                                 system: system,
-                                weight: W,
+                                weight: {
+                                    value: round(W.value),
+                                    unit: W.unit
+                                },
                                 options: [{
                                     tube: tube,
                                     deflection: {

@@ -166,6 +166,7 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
                                 `}
                             >
                                 <span className={`w-full font-medium border-b`}>{option.system.name}</span>
+                                <span className={`w-full text-start mt-1 border-b`}>Weight: {option.weight.value}{option.weight.unit}</span>
                                 <span className={` w-full text-start mt-1 border-b`}>Available Tubes:</span>
                                 <div className={`
                                 flex flex-col gap-1 max-w-48 max-h-32 overflow-y-auto overflow-x-hidden
