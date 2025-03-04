@@ -34,8 +34,10 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
         const filteredOptions = new Set<SystemOptions>();
         for( const option of options){
             const terms = search.split(' ');
-            // if any term is included in the option name, add it to the filtered options
-            if(terms.some(term => term != '' && option.system.name.toLowerCase().includes(term.toLowerCase()))){
+            const optionName = option.system.name.toLowerCase();
+
+            // if all terms is in the option name, add it to the set
+            if(terms.every((term) => optionName.includes(term))){
                 filteredOptions.add(option);
             }
         }
@@ -174,8 +176,8 @@ function Systems({shadeOptions, setShadeOptions, fabricOptions, bottomRailOption
                                             <div className={`
                                             flex flex-col w-full text-start gap-1 items-start justify-center 
                                             border-b p-0.5 italic
-                                            `}>
-                                                <div key={index}>{option.tube.name}</div>
+                                            `} key={index}>
+                                                <div>{option.tube.name}</div>
                                                 <div>Deflection: {round(option.deflection.value) + ' ' +option.deflection.unit}</div>
                                             </div>
                                         ))
